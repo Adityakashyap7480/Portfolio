@@ -320,6 +320,7 @@ section {
 }
 
 .img-box img {
+  /* border: 2px solid blue; */
   width: 100%;
   max-width: 450px;
   height: auto;
@@ -1059,7 +1060,7 @@ footer a i {
     font-size: 0.8rem;
   }
   .img-about img {
-    width: 300px;
+    width: 78%;
   }
   .info-about1,
   .info-about2,
@@ -1068,5 +1069,10 @@ footer a i {
   }
   .img-about p {
     font-size: 1rem;
+  }
+  .img-box img{
+    object-fit: cover;
+    object-position: center;
+    width:70%;
   }
 }
