@@ -202,14 +202,9 @@ export function SectionOverlay() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-paper/10 px-5 py-4">
-              <div>
-                <p className="text-[11px] font-semibold tracking-[0.24em] text-accent uppercase">
-                  /{activeSection}
-                </p>
-                <h2 id="section-modal-title" className="text-2xl font-extrabold tracking-tight">
-                  {titles[activeSection]}
-                </h2>
-              </div>
+              <h2 id="section-modal-title" className="text-2xl font-extrabold tracking-tight">
+                {titles[activeSection]}
+              </h2>
               <button
                 type="button"
                 onClick={requestExit}

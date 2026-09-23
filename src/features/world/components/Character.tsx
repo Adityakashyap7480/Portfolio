@@ -3,6 +3,7 @@ import { useEffect, useRef, type MutableRefObject } from 'react'
 import * as THREE from 'three'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES, SPAWN, WORLD_BOUNDS, type SectionId } from '../data/gates'
+import { helperPose } from './HelperNPC'
 
 const RUN_SPEED = 13.5
 const ENTER_DIST = 2.4
@@ -29,8 +30,18 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
   const placedInside = useRef<SectionId | null>(null)
   const exitPlaced = useRef(false)
 
-  const { mode, activeSection, mobileKeys, requestEnter, requestExit, canInteract } =
-    useExperience()
+  const {
+    mode,
+    activeSection,
+    mobileKeys,
+    requestEnter,
+    requestExit,
+    canInteract,
+    characterPose,
+    guidePhase,
+    guideLocksPlayer,
+    cancelGuide,
+  } = useExperience()
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -102,13 +113,31 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     const left = pressed('KeyA') || pressed('ArrowLeft')
     const right = pressed('KeyD') || pressed('ArrowRight')
 
+    // Cancel guided tour if player tries to take over
+    if (guideLocksPlayer && (forward || back || left || right)) {
+      cancelGuide()
+    }
+
     const move = new THREE.Vector3(
       (right ? 1 : 0) - (left ? 1 : 0),
       0,
       (back ? 1 : 0) - (forward ? 1 : 0),
     )
 
-    const isRunning = move.lengthSq() > 0 && canInteract
+    // Auto-follow helper while being led
+    if (guidePhase === 'leading' && helperPose.active) {
+      const fdx = helperPose.x - g.position.x
+      const fdz = helperPose.z - g.position.z
+      const fdist = Math.hypot(fdx, fdz)
+      if (fdist > 2.8) {
+        move.set(fdx / fdist, 0, fdz / fdist)
+      } else {
+        move.set(0, 0, 0)
+      }
+    }
+
+    const isRunning =
+      move.lengthSq() > 0 && (canInteract || guidePhase === 'leading')
 
     if (isRunning) {
       move.normalize()
@@ -118,7 +147,7 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
       velocity.current.multiplyScalar(0.78)
     }
 
-    if (canInteract) {
+    if (canInteract || guidePhase === 'leading') {
       g.position.x += velocity.current.x * dt
       g.position.z += velocity.current.z * dt
       g.position.x = THREE.MathUtils.clamp(g.position.x, -WORLD_BOUNDS, WORLD_BOUNDS)
@@ -129,9 +158,14 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     // Keep root Y locked — bob only the visual body so the camera doesn't shake
     g.position.y = 0
     positionRef.current.set(g.position.x, 0, g.position.z)
+    characterPose.current = {
+      x: g.position.x,
+      z: g.position.z,
+      facing: g.rotation.y,
+    }
 
     const speed = velocity.current.length()
-    const running = speed > 1.2 && canInteract
+    const running = speed > 1.2 && (canInteract || guidePhase === 'leading')
     const body = visualBody.current
 
     if (running) {

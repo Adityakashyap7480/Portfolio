@@ -6,6 +6,7 @@ import { GATES, type SectionId } from '../data/gates'
 import { CameraRig, LookControls } from './CameraRig'
 import { Character } from './Character'
 import { Gate, WelcomeArch } from './Gate'
+import { HelperNPC } from './HelperNPC'
 
 function Ground() {
   return (
@@ -120,6 +121,7 @@ export function WorldScene() {
       <Cloud position={[18, 16, 8]} opacity={0.3} speed={0.15} />
 
       <Character onNearGate={setNearGate} positionRef={characterPos} />
+      <HelperNPC />
       <CameraRig characterPos={characterPos} />
       <LookControls />
     </>

@@ -1,3 +1,4 @@
+import portrait from '../../../assets/Passport_size_photo.jpeg'
 import { profile } from '../../../shared/data/resume'
 import { useExperience } from '../context/ExperienceContext'
 import { SectionRadar } from './SectionRadar'
@@ -8,11 +9,23 @@ export function HUD() {
   return (
     <>
       <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-3 p-3 sm:p-5">
-        <div className="pointer-events-auto rounded-sm border border-void/10 bg-paper/90 px-3 py-2.5 backdrop-blur-md sm:px-4 sm:py-3">
-          <p className="text-sm font-extrabold tracking-tight text-void">{profile.name}</p>
-          <p className="text-[10px] font-semibold tracking-[0.16em] text-muted uppercase sm:text-[11px]">
-            {profile.role} · 3D Portfolio
-          </p>
+        <div className="pointer-events-auto relative isolate flex items-center gap-2.5 rounded-sm border border-void/10 px-2.5 py-2 sm:gap-3 sm:px-3 sm:py-2.5">
+          <div className="absolute inset-0 bg-paper/92 backdrop-blur-md" aria-hidden />
+          <img
+            src={portrait}
+            alt={profile.name}
+            width={128}
+            height={128}
+            decoding="async"
+            className="relative size-11 shrink-0 rounded-[2px] object-cover object-[center_15%] sm:size-12"
+            style={{ transform: 'translateZ(0)' }}
+          />
+          <div className="relative min-w-0">
+            <p className="text-sm font-extrabold tracking-tight text-void">{profile.name}</p>
+            <p className="text-[10px] font-semibold tracking-[0.16em] text-muted uppercase sm:text-[11px]">
+              {profile.role}
+            </p>
+          </div>
         </div>
 
         <div className="pointer-events-auto flex gap-2">
@@ -43,7 +56,7 @@ export function HUD() {
             Controls
           </p>
           <p className="mt-1 text-xs font-medium sm:text-sm">
-            WASD to run · Drag to look around · Enter glowing gates
+            WASD to run · Drag to look · Help button for a guide
           </p>
           {activeSection && mode === 'inside' && (
             <p className="mt-1 text-[11px] text-muted">
