@@ -12,13 +12,13 @@ export const profile = {
   resumeUrl: '/Aditya_Kashyap_Resume.pdf',
   resumeFileName: 'Aditya_Kashyap_Resume.pdf',
   summary:
-    'Full Stack Developer with 3+ years of experience designing, building, and deploying scalable web and mobile applications. Strong in clean architecture, reusable systems, and shipping reliable product experiences end to end.',
+    'Full Stack Developer with 3+ years of experience designing, building, and deploying scalable web and mobile applications. Strong across React, Next.js, NestJS, React Native, Python, and practical AI integration — with a focus on clean architecture and production-ready delivery.',
   positioning:
-    'I design and ship scalable digital products — interfaces, APIs, and infrastructure — for real businesses operating at production scale.',
+    'I build scalable web and mobile products end to end — from polished interfaces to reliable APIs, data systems, and cloud deployment.',
   story: [
-    'I started by building full-stack interfaces and systems end to end — then grew into shipping products that sit at the center of real operations: legal case workflows, payment ecosystems, and platform admin tools.',
-    'Across roles, the through-line has been the same: understand the business problem, design clean architecture, and execute across frontend, backend, data, and deployment without losing product clarity.',
-    'Today I work as a Full Stack Developer focused on scalable web and mobile applications — React, Next.js, NestJS, Node.js, PostgreSQL, Redis, and cloud delivery — with a bias toward systems that stay maintainable under real usage.',
+    'I am a Full Stack Developer with 3+ years of experience shipping production software across web and mobile. My work spans responsive frontends, scalable backends, and mobile apps — using React.js, Next.js, NestJS, Angular, React Native (Expo), Node.js, TypeScript, PostgreSQL, MongoDB, and REST APIs.',
+    'Beyond the JavaScript ecosystem, I also build with Python and Django — including certification and operations platforms with REST APIs, dashboards, and data workflows. I integrate practical AI and GenAI into products using OpenAI APIs, prompt engineering, and thoughtful AI-assisted features that improve real user workflows.',
+    'Across legal operations, payments, and platform tools, I focus on clean architecture, reusable systems, and reliable delivery — from authentication and microservices to Docker, Firebase, AWS, and Git-based collaboration — so products stay maintainable under real usage.',
   ],
 }
 
@@ -32,7 +32,7 @@ export const heroLines = [
 export const positioning = [
   { value: 3, suffix: '+', label: 'Years Experience', detail: 'Professional full-stack delivery' },
   { value: 3, suffix: '', label: 'Companies', detail: 'Legal ops, fintech, platforms' },
-  { value: 3, suffix: '', label: 'Featured Products', detail: 'AUDITLab, Fluence Pay, SIS' },
+  { value: 4, suffix: '', label: 'Featured Products', detail: 'AUDITLab, Fluence Pay, SIS, Cove' },
   { value: 4, suffix: '', label: 'Product Domains', detail: 'Case ops · Payments · Real estate · Certification' },
 ]
 
@@ -152,15 +152,12 @@ export const projects = [
     index: '01',
     role: 'Full Stack Developer',
     domain: 'Legal Operations',
-    problem:
-      'Law firms managing high-volume mass-tort portfolios need one operations platform for intake, review, documents, settlement, and client communication.',
-    contribution:
-      'Built and maintained core full-stack flows across case details, document security, Needles sync, and Connect portal support.',
-    stack: ['React.js', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'AWS S3', 'REST APIs'],
+    stack: ['React.js', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'AWS', 'REST APIs'],
     points: [
-      'Supports case intake, medical/exposure review, Smart Review, settlement workflows, checklists, reports, and classified document management.',
-      'NestJS backend with PostgreSQL and Redis, React frontend, REST APIs, and AWS S3 for secure document storage.',
-      'Synchronizes with Needles CMS while Connect provides a client-facing chat and document portal.',
+      'Legal case management platform for law firms handling high-volume mass-tort portfolios — case managers, admins, vendors, advocates, and clients via Connect.',
+      'Supports case intake, medical/exposure review, Smart Review, settlement workflows, checklists, reports, and classified documents.',
+      'NestJS backend with PostgreSQL and Redis, React.js frontend, REST APIs, and AWS S3 for secure document storage.',
+      'Syncs case data with Needles CMS; Connect provides client-facing chat and document access.',
     ],
     visual: 'legal' as const,
     liveUrl: 'https://staging-fe-dev.drsh0qo9fyi7.amplifyapp.com/dashboard' as string | undefined,
@@ -172,15 +169,12 @@ export const projects = [
     index: '02',
     role: 'Full Stack Developer',
     domain: 'Fintech · Payments',
-    problem:
-      'Merchants and users needed a connected payment and rewards system spanning onboarding, QR payments, wallets, cashback, and admin oversight.',
-    contribution:
-      'Owned user-panel mobile flows and contributed to merchant onboarding, admin modules, and microservice integrations.',
-    stack: ['React Native', 'Expo', 'Node.js', 'PostgreSQL', 'Firebase', 'Microservices'],
+    stack: ['React Native', 'Node.js', 'PostgreSQL', 'Firebase', 'Microservices'],
     points: [
-      'Merchant flows for onboarding, transactions, and cashback campaigns with REST payment APIs.',
-      'User panel with QR scan-to-pay, wallet, transaction history, and Fluence Score cashback.',
-      'Admin workflows for merchant approval, user/merchant management, and analytics dashboards.',
+      'Merchant: onboarding (applications, profile), transaction handling, and cashback campaigns with REST APIs for payments and funds.',
+      'User Panel: QR scan-to-pay, transaction history, wallet, and Fluence Score cashback in React Native / Expo.',
+      'Admin Panel: merchant approval workflows, user/merchant management, and analytics dashboards.',
+      'Integrated authentication, cashback, notifications, and points-wallet microservices for end-to-end rewards flow.',
     ],
     visual: 'pay' as const,
     liveUrl: undefined as string | undefined,
@@ -188,18 +182,31 @@ export const projects = [
     githubUrl: undefined as string | undefined,
   },
   {
-    name: 'SIS Certification',
+    name: 'Cove Agent',
     index: '03',
     role: 'Full Stack Developer',
-    domain: 'Certification Ops',
-    problem:
-      'Certification operations needed a web system for leads, proposals, training batches, exams, analytics, and report generation.',
-    contribution:
-      'Built Django-based certification management with REST APIs, dashboards, Excel workflows, and PDF reporting.',
-    stack: ['Python', 'Django', 'DRF', 'PostgreSQL', 'Pandas', 'REST APIs'],
+    domain: 'Real Estate',
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Custom Hooks'],
     points: [
-      'Interactive admin dashboards for Cost Calculator, Training Matrix, and analytics with Excel import/export via Pandas.',
-      'Reusable Django components for proposal pipelines, certification journey tracking, batch assignment, and PDF report generation.',
+      'Built responsive UI for a real estate admin platform (admin.coveagent.com) with Next.js, TypeScript, Tailwind CSS, and Redux.',
+      'Managed complex application state with React Hooks and Redux for seamless data flow across the platform.',
+      'Created reusable custom React hooks to streamline shared logic and keep the codebase maintainable.',
+    ],
+    visual: 'estate' as const,
+    liveUrl: 'https://admin.coveagent.com' as string | undefined,
+    liveLabel: 'View live' as string | undefined,
+    githubUrl: undefined as string | undefined,
+  },
+  {
+    name: 'SIS Certification',
+    index: '04',
+    role: 'Full Stack Developer',
+    domain: 'Certification Ops',
+    stack: ['Python', 'Django', 'PostgreSQL', 'REST APIs'],
+    points: [
+      'Certification management web app with modules for leads, proposals, training batches, and exam results tracking.',
+      'REST APIs and admin dashboards for Cost Calculator, Training Matrix, and analytics — including Excel import/export with Pandas.',
+      'Reusable Django components for proposal pipelines, certification journey tracking, batch assignment, and automated PDF reports.',
     ],
     visual: 'cert' as const,
     liveUrl: undefined as string | undefined,

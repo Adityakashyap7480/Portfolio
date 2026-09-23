@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Microservices: blue gear + connected nodes (1st search style) -->
+  <g stroke="#111111" stroke-width="1.1" stroke-linecap="round">
+    <line x1="12" y1="12" x2="12" y2="3.2"/>
+    <line x1="12" y1="12" x2="19.6" y2="7.6"/>
+    <line x1="12" y1="12" x2="19.6" y2="16.4"/>
+    <line x1="12" y1="12" x2="12" y2="20.8"/>
+    <line x1="12" y1="12" x2="4.4" y2="16.4"/>
+    <line x1="12" y1="12" x2="4.4" y2="7.6"/>
+  </g>
+  <circle cx="12" cy="3.2" r="1.55" fill="#111111"/>
+  <circle cx="19.6" cy="7.6" r="1.55" fill="#111111"/>
+  <circle cx="19.6" cy="16.4" r="1.55" fill="#111111"/>
+  <circle cx="12" cy="20.8" r="1.55" fill="#111111"/>
+  <circle cx="4.4" cy="16.4" r="1.55" fill="#111111"/>
+  <circle cx="4.4" cy="7.6" r="1.55" fill="#111111"/>
+  <path
+    fill="#2196F3"
+    stroke="#111111"
+    stroke-width="0.9"
+    d="M12 7.2l1.05.35 1.05-.35.55 1.05 1.1.2-.2 1.1 1.05.55-.35 1.05.35 1.05-1.05.55.2 1.1-1.1.2-.55 1.05-1.05-.35L12 16.8l-1.05.35-1.05-.35-.55-1.05-1.1-.2.2-1.1-1.05-.55.35-1.05-.35-1.05 1.05-.55-.2-1.1 1.1-.2.55-1.05 1.05.35z"
+  />
+  <circle cx="12" cy="12" r="2.15" fill="#ffffff" stroke="#111111" stroke-width="0.9"/>
+</svg>

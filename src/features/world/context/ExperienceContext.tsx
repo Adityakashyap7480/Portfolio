@@ -52,6 +52,34 @@ type ExperienceContextValue = {
 const ExperienceContext = createContext<ExperienceContextValue | null>(null)
 const FIRST_VISIT_KEY = 'portfolio-guide-prompt-seen'
 const WELCOME_INTRO_KEY = 'portfolio-welcome-intro-seen'
+const WELCOME_INTRO_TTL_MS = 60 * 60 * 1000 // 1 hour
+
+function isWelcomeIntroFresh(): boolean {
+  try {
+    const raw = localStorage.getItem(WELCOME_INTRO_KEY)
+    if (!raw) return false
+    const seenAt = Number(raw)
+    if (!Number.isFinite(seenAt)) {
+      localStorage.removeItem(WELCOME_INTRO_KEY)
+      return false
+    }
+    if (Date.now() - seenAt >= WELCOME_INTRO_TTL_MS) {
+      localStorage.removeItem(WELCOME_INTRO_KEY)
+      return false
+    }
+    return true
+  } catch {
+    return false
+  }
+}
+
+function markWelcomeIntroSeen() {
+  try {
+    localStorage.setItem(WELCOME_INTRO_KEY, String(Date.now()))
+  } catch {
+    /* ignore */
+  }
+}
 
 function scheduleGuidePrompt(setShow: (v: boolean) => void, delayMs: number) {
   try {
@@ -84,7 +112,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let shouldShowWelcome = true
     try {
-      if (localStorage.getItem(WELCOME_INTRO_KEY)) shouldShowWelcome = false
+      if (isWelcomeIntroFresh()) shouldShowWelcome = false
     } catch {
       /* ignore */
     }
@@ -201,11 +229,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
     if (welcomeDismissed.current) return
     welcomeDismissed.current = true
     setShowWelcomeIntro(false)
-    try {
-      localStorage.setItem(WELCOME_INTRO_KEY, '1')
-    } catch {
-      /* ignore */
-    }
+    markWelcomeIntroSeen()
     scheduleGuidePrompt(setShowFirstVisitPrompt, 1400)
   }, [])
 

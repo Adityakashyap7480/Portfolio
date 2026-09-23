@@ -47,22 +47,22 @@ export function HelpGuideUI() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
           >
-            <p className="text-sm font-extrabold tracking-tight">Need a guide?</p>
-            <p className="mt-1 text-xs text-muted">
+            <p className="text-base font-extrabold tracking-tight">Need a guide?</p>
+            <p className="mt-1 text-sm text-muted">
               A helper can run over and walk you to any section.
             </p>
             <div className="mt-3 flex gap-2">
               <button
                 type="button"
                 onClick={acceptFirstVisitGuide}
-                className="flex-1 bg-accent px-3 py-2 text-xs font-bold text-accent-ink"
+                className="flex-1 bg-accent px-3 py-2.5 text-sm font-bold text-accent-ink"
               >
                 Yes, guide me
               </button>
               <button
                 type="button"
                 onClick={dismissFirstVisitPrompt}
-                className="border border-void/15 px-3 py-2 text-xs font-semibold"
+                className="border border-void/15 px-3 py-2.5 text-sm font-semibold"
               >
                 No thanks
               </button>
@@ -80,7 +80,7 @@ export function HelpGuideUI() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
           >
-            <p className="text-xs font-semibold">
+            <p className="text-sm font-semibold">
               {showSummoning
                 ? 'Guide is running to you…'
                 : 'Follow the guide · press WASD to cancel'}
@@ -119,13 +119,13 @@ export function HelpGuideUI() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold tracking-[0.2em] text-accent uppercase">
+                  <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">
                     Guide
                   </p>
-                  <h2 className="mt-1 text-xl font-extrabold tracking-tight">
+                  <h2 className="mt-1 text-2xl font-extrabold tracking-tight">
                     Where would you like to go?
                   </h2>
-                  <p className="mt-1 text-sm text-paper/60">
+                  <p className="mt-1 text-base text-paper/65">
                     Select a section — I&apos;ll lead you there.
                   </p>
                 </div>
@@ -151,7 +151,7 @@ export function HelpGuideUI() {
                       className="mb-1 block size-2"
                       style={{ background: gate.color }}
                     />
-                    <span className="text-sm font-bold tracking-wide uppercase">{gate.label}</span>
+                    <span className="text-base font-bold tracking-wide uppercase">{gate.label}</span>
                   </button>
                 ))}
               </div>

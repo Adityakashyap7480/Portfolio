@@ -6,6 +6,7 @@ import { HUD } from './HUD'
 import { PortalTransition } from './PortalTransition'
 import { SectionOverlay } from './SectionOverlay'
 import { WelcomeIntro } from './WelcomeIntro'
+import { WorldAudio } from './WorldAudio'
 import { WorldScene } from './WorldScene'
 
 export function PortfolioWorld() {
@@ -28,6 +29,7 @@ export function PortfolioWorld() {
         <SectionOverlay />
         <WelcomeIntro />
         <PortalTransition />
+        <WorldAudio />
       </div>
     </ExperienceProvider>
   )

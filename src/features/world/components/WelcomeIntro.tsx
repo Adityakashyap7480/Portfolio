@@ -109,10 +109,10 @@ export function WelcomeIntro() {
                     show: { opacity: 1, y: 0 },
                   }}
                 >
-                  <p className="text-[10px] font-bold tracking-[0.18em] text-accent uppercase">
+                  <p className="text-xs font-bold tracking-[0.18em] text-accent uppercase">
                     {tip.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-paper/70">{tip.detail}</p>
+                  <p className="mt-0.5 text-sm text-paper/70">{tip.detail}</p>
                 </motion.li>
               ))}
             </motion.ul>
@@ -126,14 +126,14 @@ export function WelcomeIntro() {
               <button
                 type="button"
                 onClick={dismissWelcomeIntro}
-                className="bg-accent px-8 py-3 text-sm font-extrabold tracking-wide text-accent-ink transition hover:brightness-110"
+                className="bg-accent px-8 py-3.5 text-base font-extrabold tracking-wide text-accent-ink transition hover:brightness-110"
               >
                 Enter experience
               </button>
               <button
                 type="button"
                 onClick={dismissWelcomeIntro}
-                className="text-xs font-semibold tracking-wide text-paper/45 transition hover:text-paper/80"
+                className="text-sm font-semibold tracking-wide text-paper/45 transition hover:text-paper/80"
               >
                 Skip · press Enter
               </button>

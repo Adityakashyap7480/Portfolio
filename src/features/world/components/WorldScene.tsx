@@ -1,4 +1,4 @@
-import { Cloud, Float, Sky, Text } from '@react-three/drei'
+import { Cloud, Sky } from '@react-three/drei'
 import { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { useExperience } from '../context/ExperienceContext'
@@ -7,6 +7,7 @@ import { CameraRig, LookControls } from './CameraRig'
 import { Character } from './Character'
 import { Gate, WelcomeArch } from './Gate'
 import { HelperNPC } from './HelperNPC'
+import { SkillOrbs } from './SkillOrbs'
 
 function Ground() {
   return (
@@ -24,30 +25,6 @@ function Ground() {
         <meshStandardMaterial color="#6b7280" roughness={0.95} />
       </mesh>
     </>
-  )
-}
-
-function SkillOrbs() {
-  const icons = ['React', 'Node', 'TS', 'AWS', 'SQL']
-  return (
-    <group position={[22, 0, 0]}>
-      {icons.map((label, i) => {
-        const a = (i / icons.length) * Math.PI * 2
-        return (
-          <Float key={label} speed={1.5 + i * 0.1} floatIntensity={1.2}>
-            <group position={[Math.cos(a) * 5.5, 1.8 + (i % 3) * 0.35, Math.sin(a) * 5.5]}>
-              <mesh>
-                <boxGeometry args={[1.1, 1.1, 0.15]} />
-                <meshStandardMaterial color="#0ea5e9" emissive="#0284c7" emissiveIntensity={0.45} />
-              </mesh>
-              <Text position={[0, 0, 0.1]} fontSize={0.28} color="#fff" anchorX="center">
-                {label}
-              </Text>
-            </group>
-          </Float>
-        )
-      })}
-    </group>
   )
 }
 

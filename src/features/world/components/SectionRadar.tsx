@@ -97,7 +97,7 @@ export function SectionRadar() {
       </div>
 
       <div className="mt-2 max-w-[10.5rem] rounded-sm border border-void/10 bg-paper/85 px-2 py-1.5 text-center backdrop-blur-sm">
-        <p className="text-[10px] text-void/60">Nearest: {nearest.label}</p>
+        <p className="text-xs text-void/65">Nearest: {nearest.label}</p>
       </div>
     </div>
   )
