@@ -59,6 +59,14 @@
   html.has-custom-cursor * {
     cursor: none !important;
   }
+
+  /* 3D portfolio: lock page scroll */
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 @layer utilities {
