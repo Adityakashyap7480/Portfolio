@@ -104,25 +104,25 @@ export const skillEcosystem = [
 ]
 
 export const experience = [
-  {
-    company: 'Xicom Technologies',
-    role: 'Full Stack Developer',
-    type: 'Full Time',
-    period: 'Aug 2026 — Present',
-    focus: 'Legal case operations platform',
-    stack: ['React.js', 'TypeScript', 'NestJS', 'PostgreSQL', 'Redis', 'AWS S3'],
-    highlights: [
-      'Developed and maintained AUDITLab, a full-stack legal case operations platform using React.js, TypeScript, NestJS, PostgreSQL, Redis, and REST APIs for high-volume mass-tort case management.',
-      'Enhanced case-details modules including Files & Drafts, Smart Review, medical/exposure inventory, classified documents, checklists, and settlement workflows.',
-      'Built secure AWS S3 document workflows with browsing, preview, access controls, presigned URLs, and controlled download APIs; integrated Needles synchronization.',
-      'Debugged production-like API and database issues, strengthened error handling, and contributed to dashboards, intake campaigns, client communication, and the Connect portal.',
-    ],
-  },
+  // {
+  //   company: 'Xicom Technologies',
+  //   role: 'Full Stack Developer',
+  //   type: 'Full Time',
+  //   period: 'Aug 2026 — Present',
+  //   focus: 'Legal case operations platform',
+  //   stack: ['React.js', 'TypeScript', 'NestJS', 'PostgreSQL', 'Redis', 'AWS S3'],
+  //   highlights: [
+  //     'Developed and maintained AUDITLab, a full-stack legal case operations platform using React.js, TypeScript, NestJS, PostgreSQL, Redis, and REST APIs for high-volume mass-tort case management.',
+  //     'Enhanced case-details modules including Files & Drafts, Smart Review, medical/exposure inventory, classified documents, checklists, and settlement workflows.',
+  //     'Built secure AWS S3 document workflows with browsing, preview, access controls, presigned URLs, and controlled download APIs; integrated Needles synchronization.',
+  //     'Debugged production-like API and database issues, strengthened error handling, and contributed to dashboards, intake campaigns, client communication, and the Connect portal.',
+  //   ],
+  // },
   {
     company: 'Blu Parrot Ventures Pvt Ltd',
     role: 'Full Stack Developer',
     type: 'Full Time',
-    period: 'Oct 2024 — Jul 2026',
+    period: 'Oct 2024 — Present',
     focus: 'Payments & rewards ecosystem',
     stack: ['React Native', 'Expo', 'Node.js', 'Express.js', 'PostgreSQL', 'Firebase', 'Docker'],
     highlights: [
