@@ -3,7 +3,9 @@ import { useEffect, useRef, type MutableRefObject } from 'react'
 import * as THREE from 'three'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES, SPAWN, WORLD_BOUNDS, type SectionId } from '../data/gates'
+import { GUIDE_GREETING } from '../data/guideDialogue'
 import { helperPose } from './HelperNPC'
+import { SpeechBubble } from './SpeechBubble'
 
 const RUN_SPEED = 13.5
 const ENTER_DIST = 2.4
@@ -26,6 +28,7 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
   const velocity = useRef(new THREE.Vector3())
   const facing = useRef(0)
   const runPhase = useRef(0)
+  const talkPhase = useRef(0)
   const cooldown = useRef(0)
   const placedInside = useRef<SectionId | null>(null)
   const exitPlaced = useRef(false)
@@ -39,6 +42,7 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     canInteract,
     characterPose,
     guidePhase,
+    guideSpeaker,
     guideLocksPlayer,
     cancelGuide,
   } = useExperience()
@@ -155,6 +159,13 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
       g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, facing.current, 0.22)
     }
 
+    if (guidePhase === 'greeting' && helperPose.active) {
+      const target = Math.atan2(helperPose.x - g.position.x, helperPose.z - g.position.z)
+      const diff = Math.atan2(Math.sin(target - g.rotation.y), Math.cos(target - g.rotation.y))
+      g.rotation.y += diff * 0.12
+      facing.current = g.rotation.y
+    }
+
     // Keep root Y locked — bob only the visual body so the camera doesn't shake
     g.position.y = 0
     positionRef.current.set(g.position.x, 0, g.position.z)
@@ -206,7 +217,29 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
       }
       if (body) {
         body.position.y = THREE.MathUtils.lerp(body.position.y, 0, 0.2)
+        body.rotation.x = THREE.MathUtils.lerp(body.rotation.x, 0, 0.15)
+        body.rotation.y = THREE.MathUtils.lerp(body.rotation.y, 0, 0.15)
       }
+    }
+
+    if (!running && guidePhase === 'greeting') {
+      talkPhase.current += dt
+      const t = talkPhase.current
+      if (guideSpeaker === 'player') {
+        if (leftArm.current) {
+          leftArm.current.rotation.x = -0.7 + Math.sin(t * 8) * 0.3
+          leftArm.current.rotation.z = -0.3 - Math.sin(t * 5) * 0.12
+        }
+        if (rightArm.current) rightArm.current.rotation.x = -0.35 + Math.sin(t * 7 + 1.5) * 0.2
+        if (body) {
+          body.position.y = Math.abs(Math.sin(t * 10)) * 0.04
+          body.rotation.y = Math.sin(t * 4) * 0.08
+        }
+      } else if (body) {
+        body.rotation.x = Math.max(0, Math.sin(t * 6)) * 0.06
+      }
+    } else {
+      talkPhase.current = 0
     }
 
     let nearest: SectionId | null = null
@@ -296,6 +329,11 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
         </mesh>
       </group>
       </group>
+      <SpeechBubble
+        text={GUIDE_GREETING.player}
+        visible={guidePhase === 'greeting' && guideSpeaker === 'player'}
+        y={2.75}
+      />
     </group>
   )
 }

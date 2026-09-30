@@ -1,3 +1,8 @@
+import auditlabCover from '../../assets/projects/auditlab.webp'
+import coveAgentCover from '../../assets/projects/cove-agent.webp'
+import fluencePayCover from '../../assets/projects/fluence-pay.webp'
+import sisCertificationCover from '../../assets/projects/sis-certification.webp'
+
 export const profile = {
   name: 'Aditya Kashyap',
   initials: 'AK',
@@ -31,7 +36,6 @@ export const heroLines = [
 /** Stats derived only from existing resume content — no invented metrics */
 export const positioning = [
   { value: 3, suffix: '+', label: 'Years Experience', detail: 'Professional full-stack delivery' },
-  { value: 3, suffix: '', label: 'Companies', detail: 'Legal ops, fintech, platforms' },
   { value: 4, suffix: '', label: 'Featured Products', detail: 'AUDITLab, Fluence Pay, SIS, Cove' },
   { value: 4, suffix: '', label: 'Product Domains', detail: 'Case ops · Payments · Real estate · Certification' },
 ]
@@ -63,6 +67,7 @@ export const skillEcosystem = [
   {
     id: 'technology',
     title: 'Technology',
+    heading: 'Languages, Frameworks & Databases',
     description: 'Languages, frameworks, and data layers used to ship production systems.',
     items: [
       ...skills.languages,
@@ -80,24 +85,28 @@ export const skillEcosystem = [
   {
     id: 'product',
     title: 'Product',
+    heading: 'Building Scalable Products',
     description: 'Turning business workflows into clear interfaces, APIs, and durable architecture.',
     items: ['System Design', 'REST APIs', 'Clean Architecture', 'Reusable Components', 'Redux', 'Custom Hooks'],
   },
   {
     id: 'operations',
     title: 'Operations',
+    heading: 'Deployment & Infrastructure',
     description: 'Deployment, reliability, and services that keep products running in production.',
     items: ['Docker', 'Nginx', 'AWS', 'GCP', 'Firebase', 'Microservices', 'Error Handling'],
   },
   {
     id: 'ai',
     title: 'AI / GenAI',
+    heading: 'AI Integration & Tools',
     description: 'Practical AI integration and prompt-driven product features.',
     items: skills.ai,
   },
   {
     id: 'collaboration',
     title: 'Collaboration',
+    heading: 'Tools & Workflow',
     description: 'How work gets done across teams, reviews, and delivery cycles.',
     items: [...skills.soft, 'Git', 'GitHub', 'Agile Practices'],
   },
@@ -123,8 +132,28 @@ export const experience = [
     role: 'Full Stack Developer',
     type: 'Full Time',
     period: 'Oct 2024 — Present',
+    start: 'Oct 2024',
+    end: 'Present',
     focus: 'Payments & rewards ecosystem',
-    stack: ['React Native', 'Expo', 'Node.js', 'Express.js', 'PostgreSQL', 'Firebase', 'Docker'],
+    summary:
+      "Engineered and scaled Fluence Pay's user panel and merchant ecosystem, handling payments, rewards, and financial workflows — integrating multiple services for a seamless user experience.",
+    cover: fluencePayCover,
+    stack: [
+      'React Native',
+      'Expo',
+      'TypeScript',
+      'Node.js',
+      'Express.js',
+      'PostgreSQL',
+      'Firebase',
+      'Docker',
+      'Nginx',
+    ],
+    emphasis: [
+      "Engineered Fluence Pay's User Panel",
+      'Built Merchant Onboarding and Admin Panel',
+      'Integrated Authentication, Cashback, Notifications, and Points Wallet',
+    ],
     highlights: [
       "Engineered Fluence Pay's User Panel with React Native, Expo, and TypeScript — QR payments, digital wallet, transaction history, cashback rewards, and REST API integration.",
       'Built Merchant Onboarding and Admin Panel modules using Node.js, Express.js, PostgreSQL, and Firebase for KYC, approvals, user management, and analytics.',
@@ -136,8 +165,14 @@ export const experience = [
     role: 'Full Stack Developer',
     type: 'Full Time',
     period: 'Sep 2023 — Oct 2024',
+    start: 'Sep 2023',
+    end: 'Oct 2024',
     focus: 'Real estate platform UI',
-    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Redux'],
+    summary:
+      'Developed a responsive, scalable real estate platform with a modern UI — focused on performance, clean architecture, and a seamless user experience.',
+    cover: coveAgentCover,
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Custom Hooks'],
+    emphasis: [] as string[],
     highlights: [
       'Developed responsive UI for a real estate platform (admin.coveagent.com) using Next.js, TypeScript, Tailwind CSS, and Redux with modular architecture.',
       'Managed complex application state with React Hooks and Redux for seamless data flow across the platform.',
@@ -151,10 +186,13 @@ export const projects = [
     name: 'AUDITLab',
     index: '01',
     role: 'Full Stack Developer',
+    nameAccent: 'Lab',
     domain: 'Legal Operations',
+    summary:
+      'A legal case management platform for law firms handling high-volume mass-tort portfolios — connecting case managers, admins, vendors, advocates, and clients via Connect.',
+    cover: auditlabCover,
     stack: ['React.js', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'AWS', 'REST APIs'],
     points: [
-      'Legal case management platform for law firms handling high-volume mass-tort portfolios — case managers, admins, vendors, advocates, and clients via Connect.',
       'Supports case intake, medical/exposure review, Smart Review, settlement workflows, checklists, reports, and classified documents.',
       'NestJS backend with PostgreSQL and Redis, React.js frontend, REST APIs, and AWS S3 for secure document storage.',
       'Syncs case data with Needles CMS; Connect provides client-facing chat and document access.',
@@ -168,24 +206,31 @@ export const projects = [
     name: 'Fluence Pay',
     index: '02',
     role: 'Full Stack Developer',
+    nameAccent: 'Pay',
     domain: 'Fintech · Payments',
+    summary:
+      'A payments & rewards ecosystem for merchants and shoppers — powered by authentication, cashback, notifications, and points-wallet microservices.',
+    cover: fluencePayCover,
     stack: ['React Native', 'Node.js', 'PostgreSQL', 'Firebase', 'Microservices'],
     points: [
       'Merchant: onboarding (applications, profile), transaction handling, and cashback campaigns with REST APIs for payments and funds.',
       'User Panel: QR scan-to-pay, transaction history, wallet, and Fluence Score cashback in React Native / Expo.',
       'Admin Panel: merchant approval workflows, user/merchant management, and analytics dashboards.',
-      'Integrated authentication, cashback, notifications, and points-wallet microservices for end-to-end rewards flow.',
     ],
     visual: 'pay' as const,
-    liveUrl: undefined as string | undefined,
-    liveLabel: undefined as string | undefined,
+    liveUrl: 'https://fluencepay.com' as string | undefined,
+    liveLabel: 'View live' as string | undefined,
     githubUrl: undefined as string | undefined,
   },
   {
     name: 'Cove Agent',
     index: '03',
     role: 'Full Stack Developer',
+    nameAccent: 'Agent',
     domain: 'Real Estate',
+    summary:
+      'An all-in-one platform for modern real estate — manage leads, build websites, market listings, and grow a real estate business in one place.',
+    cover: coveAgentCover,
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Custom Hooks'],
     points: [
       'Built responsive UI for a real estate admin platform (admin.coveagent.com) with Next.js, TypeScript, Tailwind CSS, and Redux.',
@@ -201,7 +246,11 @@ export const projects = [
     name: 'SIS Certification',
     index: '04',
     role: 'Full Stack Developer',
+    nameAccent: 'Certification',
     domain: 'Certification Ops',
+    summary:
+      'A super-admin portal for certification bodies — sales, planning, trainings, auditors, accreditation, and compliance tracked end to end.',
+    cover: sisCertificationCover,
     stack: ['Python', 'Django', 'PostgreSQL', 'REST APIs'],
     points: [
       'Certification management web app with modules for leads, proposals, training batches, and exam results tracking.',

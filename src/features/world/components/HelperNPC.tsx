@@ -2,8 +2,11 @@ import { Text } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import fontBold from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-800-normal.woff'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES } from '../data/gates'
+import { GUIDE_GREETING } from '../data/guideDialogue'
+import { SpeechBubble } from './SpeechBubble'
 
 const HELPER_SPEED = 11
 
@@ -16,12 +19,14 @@ export function HelperNPC() {
   const leftArm = useRef<THREE.Mesh>(null)
   const rightArm = useRef<THREE.Mesh>(null)
   const runPhase = useRef(0)
+  const talkPhase = useRef(0)
   const spawned = useRef(false)
   const arrivedOnce = useRef(false)
 
   const {
     guidePhase,
     guideTarget,
+    guideSpeaker,
     characterPose,
     onHelperReachedPlayer,
     onHelperReachedGate,
@@ -40,7 +45,7 @@ export function HelperNPC() {
 
   // Cancel guide if player presses WASD while being led/summoned
   useEffect(() => {
-    if (guidePhase !== 'leading' && guidePhase !== 'summoning') return
+    if (guidePhase !== 'leading' && guidePhase !== 'summoning' && guidePhase !== 'greeting') return
 
     const onKey = (e: KeyboardEvent) => {
       if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
@@ -81,6 +86,9 @@ export function HelperNPC() {
       targetZ = pose.z + Math.cos(pose.facing + 0.6) * 2.2
       arriveDist = 1.8
       onArrive = onHelperReachedPlayer
+    } else if (guidePhase === 'greeting') {
+      targetX = g.position.x
+      targetZ = g.position.z
     } else if (guidePhase === 'asking') {
       targetX = pose.x + Math.sin(pose.facing + 0.9) * 2
       targetZ = pose.z + Math.cos(pose.facing + 0.9) * 2
@@ -98,7 +106,7 @@ export function HelperNPC() {
     g.position.y = 0
     helperPose.x = g.position.x
     helperPose.z = g.position.z
-    helperPose.active = guidePhase === 'leading' || guidePhase === 'summoning' || guidePhase === 'asking'
+    helperPose.active = true
 
     const dx = targetX - g.position.x
     const dz = targetZ - g.position.z
@@ -139,9 +147,39 @@ export function HelperNPC() {
     } else {
       if (leftLeg.current) leftLeg.current.rotation.x *= 0.8
       if (rightLeg.current) rightLeg.current.rotation.x *= 0.8
-      if (leftArm.current) leftArm.current.rotation.x *= 0.8
-      if (rightArm.current) rightArm.current.rotation.x *= 0.8
-      if (body) body.position.y = THREE.MathUtils.lerp(body.position.y, 0, 0.2)
+      if (leftArm.current) {
+        leftArm.current.rotation.x *= 0.8
+        leftArm.current.rotation.z *= 0.8
+      }
+      if (rightArm.current) {
+        rightArm.current.rotation.x *= 0.8
+        rightArm.current.rotation.z *= 0.8
+      }
+      if (body) {
+        body.position.y = THREE.MathUtils.lerp(body.position.y, 0, 0.2)
+        body.rotation.x *= 0.85
+        body.rotation.y *= 0.85
+      }
+    }
+
+    if (!moving && guidePhase === 'greeting') {
+      talkPhase.current += dt
+      const t = talkPhase.current
+      if (guideSpeaker === 'helper') {
+        if (rightArm.current) {
+          rightArm.current.rotation.x = -0.75 + Math.sin(t * 9) * 0.35
+          rightArm.current.rotation.z = 0.35 + Math.sin(t * 6) * 0.15
+        }
+        if (leftArm.current) leftArm.current.rotation.x = -0.3 + Math.sin(t * 7 + 1) * 0.15
+        if (body) {
+          body.position.y = Math.abs(Math.sin(t * 10)) * 0.04
+          body.rotation.y = Math.sin(t * 4) * 0.08
+        }
+      } else if (body) {
+        body.rotation.x = Math.max(0, Math.sin(t * 6)) * 0.06
+      }
+    } else {
+      talkPhase.current = 0
     }
   })
 
@@ -196,15 +234,23 @@ export function HelperNPC() {
         </mesh>
         <Text
           position={[0, 2.45, 0]}
+          font={fontBold}
           fontSize={0.28}
           color="#c8f542"
           anchorX="center"
           outlineWidth={0.015}
           outlineColor="#000"
+          material-toneMapped={false}
         >
           GUIDE
         </Text>
       </group>
+      <SpeechBubble
+        text={GUIDE_GREETING.helper}
+        visible={guidePhase === 'greeting' && guideSpeaker === 'helper'}
+        accent
+        y={3.05}
+      />
     </group>
   )
 }

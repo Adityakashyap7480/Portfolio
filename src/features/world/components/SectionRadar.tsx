@@ -36,7 +36,7 @@ export function SectionRadar() {
     const worldAngle = Math.atan2(dx, dz)
     const rel = worldAngle - lookYaw - Math.PI
     const dist = Math.hypot(dx, dz)
-    const radius = Math.min(48, 16 + dist * 1.05)
+    const radius = Math.min(46, 16 + dist * 1.05)
     return {
       ...gate,
       x: Math.sin(rel) * radius,
@@ -48,13 +48,19 @@ export function SectionRadar() {
   const nearest = markers.reduce((a, b) => (a.dist < b.dist ? a : b))
 
   return (
-    <div className="pointer-events-none fixed top-24 right-4 z-30 sm:top-28 sm:right-6">
-      <div className="relative size-32 overflow-hidden rounded-full border-2 border-void/20 bg-paper/90 shadow-lg backdrop-blur-md sm:size-40">
-        <div className="absolute inset-4 rounded-full border border-dashed border-void/15" />
-        <div className="absolute inset-[28%] rounded-full border border-void/8" />
+    <div className="pointer-events-none fixed top-24 right-4 z-30 flex flex-col items-center sm:top-28 sm:right-6">
+      <div className="relative size-32 overflow-hidden rounded-full border border-accent/30 bg-void/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7),0_0_24px_-8px_rgba(200,245,66,0.4)] backdrop-blur-md sm:size-40">
+        <div className="absolute inset-0 animate-spin rounded-full bg-[conic-gradient(from_0deg,rgba(200,245,66,0.22),transparent_22%)] [animation-duration:4s]" />
+        <div className="absolute inset-3 rounded-full border border-dashed border-paper/15" />
+        <div className="absolute inset-[30%] rounded-full border border-paper/10" />
+        <div className="absolute inset-y-2 left-1/2 w-px -translate-x-1/2 bg-paper/[0.07]" />
+        <div className="absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-paper/[0.07]" />
 
-        {/* You */}
-        <div className="absolute top-1/2 left-1/2 z-10 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-void ring-2 ring-accent" />
+        <p className="absolute top-1.5 left-1/2 -translate-x-1/2 text-[8px] font-extrabold tracking-[0.25em] text-accent/70 uppercase">
+          You
+        </p>
+
+        <div className="absolute top-1/2 left-1/2 z-10 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_10px_#c8f542]" />
 
         {/* Direction arrow — where you are facing / running */}
         <div
@@ -63,31 +69,48 @@ export function SectionRadar() {
             transform: `translate(-50%, -50%) rotate(${(headingRel * 180) / Math.PI}deg)`,
           }}
         >
-          <svg width="28" height="48" viewBox="0 0 28 48" className="-mt-5 drop-shadow-md" aria-hidden>
+          <svg
+            width="22"
+            height="40"
+            viewBox="0 0 28 48"
+            className="-mt-4 drop-shadow-[0_0_6px_rgba(200,245,66,0.7)]"
+            aria-hidden
+          >
             <path d="M14 2 L26 40 L14 32 L2 40 Z" fill="#c8f542" stroke="#0a1200" strokeWidth="1.5" />
           </svg>
         </div>
 
-        <p className="absolute top-1.5 left-1/2 -translate-x-1/2 text-[9px] font-extrabold tracking-[0.2em] text-void/45 uppercase">
-          YOU
-        </p>
-
         {markers.map((m) => {
           const active = mode !== 'hub' && activeSection === m.id
+          const isNearest = m.id === nearest.id
+          // keep labels on the inward side so they never clip at the rim
+          const side = m.x > 6 ? 'right-3' : m.x < -6 ? 'left-3' : 'left-1/2 top-3 -translate-x-1/2'
           return (
             <div
               key={m.id}
               className="absolute top-1/2 left-1/2 z-[5]"
               style={{ transform: `translate(calc(-50% + ${m.x}px), calc(-50% + ${m.y}px))` }}
             >
+              <span className="relative block size-2.5">
+                {isNearest && (
+                  <span
+                    className="absolute -inset-1 animate-ping rounded-full opacity-60"
+                    style={{ background: m.color }}
+                  />
+                )}
+                <span
+                  className="relative block size-2.5 rounded-full"
+                  style={{
+                    background: active || isNearest ? m.color : '#080808',
+                    boxShadow: `0 0 0 2px ${m.color}, 0 0 10px ${m.color}99`,
+                  }}
+                />
+              </span>
               <span
-                className={`block size-2.5 rounded-full ${active ? 'bg-accent' : 'bg-void'}`}
-                style={{ boxShadow: `0 0 0 2px ${m.color}` }}
-              />
-              <span
-                className={`absolute top-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] font-bold tracking-wide uppercase sm:text-[9px] ${
-                  active ? 'text-void' : 'text-void/65'
+                className={`absolute whitespace-nowrap text-[8px] font-bold tracking-wide uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] sm:text-[9px] ${side} ${
+                  side.includes('top-3') ? '' : 'top-1/2 -translate-y-1/2'
                 }`}
+                style={{ color: isNearest || active ? m.color : 'rgba(243,242,238,0.7)' }}
               >
                 {m.label}
               </span>
@@ -96,8 +119,17 @@ export function SectionRadar() {
         })}
       </div>
 
-      <div className="mt-2 max-w-[10.5rem] rounded-sm border border-void/10 bg-paper/85 px-2 py-1.5 text-center backdrop-blur-sm">
-        <p className="text-xs text-void/65">Nearest: {nearest.label}</p>
+      <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-paper/10 bg-void/80 px-3 py-1 backdrop-blur-md">
+        <span
+          className="size-2 rounded-full"
+          style={{ background: nearest.color, boxShadow: `0 0 8px ${nearest.color}` }}
+        />
+        <p className="text-[11px] text-paper/60">
+          Nearest{' '}
+          <span className="font-bold tracking-wide uppercase" style={{ color: nearest.color }}>
+            {nearest.label}
+          </span>
+        </p>
       </div>
     </div>
   )

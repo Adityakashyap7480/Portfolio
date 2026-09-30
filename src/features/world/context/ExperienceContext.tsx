@@ -11,9 +11,14 @@ import {
 } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { GATES, sectionFromPath, type SectionId } from '../data/gates'
+import {
+  GREETING_DURATION_MS,
+  GREETING_REPLY_AT_MS,
+  type GuideSpeaker,
+} from '../data/guideDialogue'
 
 type Mode = 'hub' | 'entering' | 'inside' | 'exiting'
-export type GuidePhase = 'idle' | 'summoning' | 'asking' | 'leading'
+export type GuidePhase = 'idle' | 'summoning' | 'greeting' | 'asking' | 'leading'
 
 type CharacterPose = { x: number; z: number; facing: number }
 
@@ -36,6 +41,8 @@ type ExperienceContextValue = {
   /** Guide / Help assistant */
   guidePhase: GuidePhase
   guideTarget: SectionId | null
+  /** Who is talking during the greeting exchange */
+  guideSpeaker: GuideSpeaker | null
   showFirstVisitPrompt: boolean
   showWelcomeIntro: boolean
   dismissWelcomeIntro: () => void
@@ -102,6 +109,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
   const [lookPitch, setLookPitch] = useState(0.28)
   const [guidePhase, setGuidePhase] = useState<GuidePhase>('idle')
   const [guideTarget, setGuideTarget] = useState<SectionId | null>(null)
+  const [guideSpeaker, setGuideSpeaker] = useState<GuideSpeaker | null>(null)
   const [showFirstVisitPrompt, setShowFirstVisitPrompt] = useState(false)
   const [showWelcomeIntro, setShowWelcomeIntro] = useState(false)
   const lock = useRef(false)
@@ -200,8 +208,24 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const onHelperReachedPlayer = useCallback(() => {
-    setGuidePhase((p) => (p === 'summoning' ? 'asking' : p))
+    setGuidePhase((p) => (p === 'summoning' ? 'greeting' : p))
   }, [])
+
+  useEffect(() => {
+    if (guidePhase !== 'greeting') {
+      setGuideSpeaker(null)
+      return
+    }
+    setGuideSpeaker('helper')
+    const reply = window.setTimeout(() => setGuideSpeaker('player'), GREETING_REPLY_AT_MS)
+    const done = window.setTimeout(() => {
+      setGuidePhase((p) => (p === 'greeting' ? 'asking' : p))
+    }, GREETING_DURATION_MS)
+    return () => {
+      window.clearTimeout(reply)
+      window.clearTimeout(done)
+    }
+  }, [guidePhase])
 
   const onHelperReachedGate = useCallback(() => {
     setGuideTarget((target) => {
@@ -262,7 +286,8 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
     setGuideTarget(null)
   }, [location.pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const guideLocksPlayer = guidePhase === 'leading' || guidePhase === 'summoning'
+  const guideLocksPlayer =
+    guidePhase === 'leading' || guidePhase === 'summoning' || guidePhase === 'greeting'
 
   const value = useMemo(
     () => ({
@@ -284,6 +309,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
       characterPose,
       guidePhase,
       guideTarget,
+      guideSpeaker,
       showFirstVisitPrompt,
       showWelcomeIntro,
       dismissWelcomeIntro,
@@ -312,6 +338,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
       addLookDelta,
       guidePhase,
       guideTarget,
+      guideSpeaker,
       showFirstVisitPrompt,
       showWelcomeIntro,
       dismissWelcomeIntro,

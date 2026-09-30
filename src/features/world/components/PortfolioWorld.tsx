@@ -12,7 +12,7 @@ import { WorldScene } from './WorldScene'
 export function PortfolioWorld() {
   return (
     <ExperienceProvider>
-      <div className="relative h-svh w-full overflow-hidden bg-[#87b5d9]">
+      <div className="relative h-svh w-full overflow-hidden bg-[#e9c9a4]">
         <Canvas
           shadows
           dpr={[1, 1.75]}
