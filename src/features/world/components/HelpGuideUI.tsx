@@ -55,7 +55,7 @@ export function HelpGuideUI() {
               type="button"
               onClick={startGuide}
               aria-label="Open guide (H)"
-              className="group relative cursor-pointer flex flex-col items-center gap-2 rounded-2xl border border-accent/40 bg-void/85 px-3 pt-3 pb-2.5 text-paper shadow-[0_0_30px_-8px_rgba(200,245,66,0.55)] backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-accent hover:shadow-[0_0_44px_-6px_rgba(200,245,66,0.85)]"
+              className="group relative cursor-pointer flex flex-col items-center gap-2 rounded-2xl border border-accent/40 bg-void/85 px-3 pt-3 pb-2.5 text-paper shadow-[0_0_30px_-8px_rgba(200,245,66,0.55)] transition-[border-color,box-shadow] duration-300 hover:border-accent hover:shadow-[0_0_44px_-6px_rgba(200,245,66,0.85)]"
               animate={{ y: [0, -5, 0] }}
               transition={{
                 duration: 3.2,
@@ -81,7 +81,7 @@ export function HelpGuideUI() {
                 H
               </kbd>
 
-              <span className="pointer-events-none absolute top-1/2 right-full mr-3 w-max -translate-y-1/2 translate-x-2 rounded-xl border border-paper/10 bg-void/95 px-3.5 py-2.5 text-left opacity-0 shadow-xl backdrop-blur-md transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+              <span className="pointer-events-none absolute top-1/2 right-full mr-3 w-max -translate-y-1/2 translate-x-2 rounded-xl border border-paper/10 bg-void/95 px-3.5 py-2.5 text-left opacity-0 shadow-xl transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                 <span className="block text-sm font-bold text-paper">
                   Need a guide?
                 </span>
@@ -110,7 +110,7 @@ export function HelpGuideUI() {
               role="dialog"
               aria-labelledby="first-visit-guide-title"
             >
-              <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-gradient-to-b from-[#161a1f]/95 to-void/95 p-4 text-paper shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl">
+              <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-gradient-to-b from-[#161a1f]/95 to-void/95 p-4 text-paper shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)]">
                 <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
                 <span className="pointer-events-none absolute -top-16 -left-10 size-40 rounded-full bg-accent/15 blur-3xl" />
 
@@ -180,7 +180,7 @@ export function HelpGuideUI() {
       <AnimatePresence>
         {(showSummoning || showLeading) && (
           <motion.div
-            className="pointer-events-auto fixed bottom-24 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full border border-accent/30 bg-void/85 py-2 pr-2 pl-4 text-paper shadow-[0_12px_36px_-12px_rgba(0,0,0,0.8),0_0_24px_-10px_rgba(200,245,66,0.6)] backdrop-blur-md"
+            className="pointer-events-auto fixed bottom-24 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full border border-accent/30 bg-void/85 py-2 pr-2 pl-4 text-paper shadow-[0_12px_36px_-12px_rgba(0,0,0,0.8),0_0_24px_-10px_rgba(200,245,66,0.6)]"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -223,7 +223,7 @@ export function HelpGuideUI() {
           >
             <button
               type="button"
-              className="absolute inset-0 bg-void/60 backdrop-blur-[3px]"
+              className="absolute inset-0 bg-void/70"
               aria-label="Close help"
               onClick={cancelGuide}
             />

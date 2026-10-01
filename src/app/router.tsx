@@ -10,10 +10,13 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PortfolioWorld />} />
-        {GATES.map((gate) => (
-          <Route key={gate.id} path={gate.path} element={<PortfolioWorld />} />
-        ))}
+        {/* One layout route so the 3D world is never remounted when the URL changes */}
+        <Route element={<PortfolioWorld />}>
+          <Route path="/" element={null} />
+          {GATES.map((gate) => (
+            <Route key={gate.id} path={gate.path} element={null} />
+          ))}
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

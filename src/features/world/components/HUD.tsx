@@ -5,10 +5,11 @@ import portrait from '../../../assets/Passport_size_photo.jpeg'
 import portraitCutout from '../../../assets/portrait_cutout.webp'
 import { profile } from '../../../shared/data/resume'
 import { useExperience } from '../context/ExperienceContext'
+import { MobileJoystick } from './MobileJoystick'
 import { SectionRadar } from './SectionRadar'
 
 export function HUD() {
-  const { mode, setMobileKey, requestExit, activeSection } = useExperience()
+  const { mode, requestExit, activeSection } = useExperience()
   const [photoOpen, setPhotoOpen] = useState(false)
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function HUD() {
     <>
       <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-3 p-3 sm:p-5">
         <motion.div
-          className="group pointer-events-auto relative flex items-center gap-3 overflow-hidden rounded-2xl border border-accent/25 bg-void/80 py-2 pr-4 pl-2 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-accent/55 hover:shadow-[0_0_32px_-8px_rgba(200,245,66,0.45)] sm:gap-3.5 sm:pr-5"
+          className="group pointer-events-auto relative flex items-center gap-3 overflow-hidden rounded-2xl border border-accent/25 bg-void/80 py-2 pr-4 pl-2 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition-[border-color,box-shadow] duration-300 hover:border-accent/55 hover:shadow-[0_0_32px_-8px_rgba(200,245,66,0.45)] sm:gap-3.5 sm:pr-5"
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 240, damping: 24 }}
@@ -79,7 +80,7 @@ export function HUD() {
           <a
             href={profile.resumeUrl}
             download={profile.resumeFileName}
-            className="group inline-flex items-center gap-2 rounded-xl border border-accent/40 bg-void/80 px-3.5 py-2.5 text-sm font-bold text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] backdrop-blur-md transition hover:border-accent hover:bg-accent hover:text-accent-ink"
+            className="group inline-flex items-center gap-2 rounded-xl border border-accent/40 bg-void/80 px-3.5 py-2.5 text-sm font-bold text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition hover:border-accent hover:bg-accent hover:text-accent-ink"
           >
             <Download className="size-4 text-accent transition group-hover:translate-y-0.5 group-hover:text-accent-ink" />
             Resume
@@ -99,8 +100,8 @@ export function HUD() {
 
       <SectionRadar />
 
-      <div className="pointer-events-none fixed bottom-0 left-0 z-30 p-3 sm:p-5">
-        <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-void/80 px-3.5 py-3 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] backdrop-blur-md sm:px-4">
+      <div className="pointer-events-none fixed bottom-0 left-0 z-30 hidden p-3 sm:block sm:p-5">
+        <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-void/80 px-3.5 py-3 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] sm:px-4">
           <span
             className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
             aria-hidden
@@ -132,20 +133,13 @@ export function HUD() {
           {activeSection && mode === 'inside' && (
             <p className="mt-2 flex items-center gap-1.5 text-[11px] text-paper/50">
               <Key>Esc</Key>
-              or walk back out the gate to return
+              to return
             </p>
           )}
         </div>
       </div>
 
-      <div className="pointer-events-auto fixed right-3 bottom-3 z-30 grid grid-cols-3 gap-2 sm:hidden">
-        <span />
-        <Pad code="KeyW" label="▲" setMobileKey={setMobileKey} />
-        <span />
-        <Pad code="KeyA" label="◀" setMobileKey={setMobileKey} />
-        <Pad code="KeyS" label="▼" setMobileKey={setMobileKey} />
-        <Pad code="KeyD" label="▶" setMobileKey={setMobileKey} />
-      </div>
+      <MobileJoystick />
 
       <AnimatePresence>
         {photoOpen && (
@@ -209,31 +203,5 @@ function Key({ children, accent = false }: { children: ReactNode; accent?: boole
     >
       {children}
     </kbd>
-  )
-}
-
-function Pad({
-  code,
-  label,
-  setMobileKey,
-}: {
-  code: string
-  label: string
-  setMobileKey: (key: string, pressed: boolean) => void
-}) {
-  return (
-    <button
-      type="button"
-      className="flex size-12 items-center justify-center rounded-xl border border-accent/30 bg-void/80 text-sm font-bold text-accent shadow-[0_8px_20px_-10px_rgba(0,0,0,0.8)] backdrop-blur-md select-none active:bg-accent active:text-accent-ink"
-      onPointerDown={(e) => {
-        e.preventDefault()
-        setMobileKey(code, true)
-      }}
-      onPointerUp={() => setMobileKey(code, false)}
-      onPointerLeave={() => setMobileKey(code, false)}
-      onPointerCancel={() => setMobileKey(code, false)}
-    >
-      {label}
-    </button>
   )
 }

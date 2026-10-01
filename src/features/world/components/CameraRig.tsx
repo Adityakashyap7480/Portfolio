@@ -64,9 +64,10 @@ export function CameraRig({
   characterPos: MutableRefObject<THREE.Vector3>
 }) {
   const { camera } = useThree()
-  const { mode, lookYaw, lookPitch } = useExperience()
+  const { mode, look } = useExperience()
   const smoothFollow = useRef(new THREE.Vector3(0, 0, 6))
   const smoothLook = useRef(new THREE.Vector3(0, 1.35, 6))
+  const desired = useRef(new THREE.Vector3())
 
   useFrame((_, delta) => {
     const target = characterPos.current
@@ -76,18 +77,19 @@ export function CameraRig({
     smoothFollow.current.z = THREE.MathUtils.lerp(smoothFollow.current.z, target.z, followSpeed)
     smoothFollow.current.y = 0
 
+    const { yaw: lookYaw, pitch: lookPitch } = look.current
     const distance = mode === 'inside' ? 8.2 : 12.5
     const height = distance * Math.sin(lookPitch) + (mode === 'inside' ? 1.2 : 1.8)
     const flat = distance * Math.cos(lookPitch)
 
-    const desired = new THREE.Vector3(
+    desired.current.set(
       smoothFollow.current.x + Math.sin(lookYaw) * flat,
       height,
       smoothFollow.current.z + Math.cos(lookYaw) * flat,
     )
 
     const camSpeed = 1 - Math.exp(-10 * delta)
-    camera.position.lerp(desired, camSpeed)
+    camera.position.lerp(desired.current, camSpeed)
 
     smoothLook.current.set(smoothFollow.current.x, 1.35, smoothFollow.current.z)
     camera.lookAt(smoothLook.current)

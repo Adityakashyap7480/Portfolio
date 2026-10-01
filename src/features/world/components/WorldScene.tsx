@@ -1,5 +1,5 @@
 import { Cloud, Sky, Sparkles } from '@react-three/drei'
-import { useMemo, useRef, useState } from 'react'
+import { memo, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES, type SectionId } from '../data/gates'
@@ -28,7 +28,7 @@ function nearGateLane(angle: number, width: number) {
   })
 }
 
-function Ground() {
+const Ground = memo(function Ground() {
   return (
     <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
@@ -45,9 +45,9 @@ function Ground() {
       </mesh>
     </>
   )
-}
+})
 
-function Plaza() {
+const Plaza = memo(function Plaza() {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} receiveShadow>
@@ -83,53 +83,114 @@ function Plaza() {
       })}
     </group>
   )
+})
+
+type InstanceSpec = {
+  position: [number, number, number]
+  rotation?: [number, number, number]
+  scale?: number
+  color?: string
 }
 
-function Paths() {
-  return (
-    <group>
-      {GATES.map((gate) => {
-        const dist = Math.hypot(gate.position[0], gate.position[2])
-        const start = PLAZA_RADIUS - 0.2
-        const end = dist - 1.3
-        const len = end - start
-        const angle = Math.atan2(gate.position[0], gate.position[2])
-        const lights: number[] = []
-        for (let z = start + 1.2; z < end - 0.4; z += 2.6) lights.push(z)
+/** One draw call for many copies of the same mesh */
+function InstancedSet({
+  items,
+  castShadow = false,
+  receiveShadow = false,
+  children,
+}: {
+  items: InstanceSpec[]
+  castShadow?: boolean
+  receiveShadow?: boolean
+  children: ReactNode
+}) {
+  const ref = useRef<THREE.InstancedMesh>(null)
 
-        return (
-          <group key={gate.id} rotation={[0, angle, 0]}>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.022, start + len / 2]} receiveShadow>
-              <planeGeometry args={[PATH_WIDTH + 0.4, len]} />
-              <meshStandardMaterial color="#5f5a50" roughness={0.9} />
-            </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.026, start + len / 2]} receiveShadow>
-              <planeGeometry args={[PATH_WIDTH, len]} />
-              <meshStandardMaterial color="#8d8677" roughness={0.85} />
-            </mesh>
-            {lights.map((z) =>
-              [-1, 1].map((side) => (
-                <group key={`${z}-${side}`} position={[side * (PATH_WIDTH / 2 + 0.35), 0, z]}>
-                  <mesh position={[0, 0.12, 0]}>
-                    <cylinderGeometry args={[0.07, 0.09, 0.24, 8]} />
-                    <meshStandardMaterial color="#1b1f24" metalness={0.5} roughness={0.4} />
-                  </mesh>
-                  <mesh position={[0, 0.27, 0]}>
-                    <sphereGeometry args={[0.08, 10, 10]} />
-                    <meshBasicMaterial color={gate.color} toneMapped={false} />
-                  </mesh>
-                </group>
-              )),
-            )}
-          </group>
-        )
-      })}
-    </group>
+  useLayoutEffect(() => {
+    const mesh = ref.current
+    if (!mesh) return
+    const dummy = new THREE.Object3D()
+    const color = new THREE.Color()
+    items.forEach((item, i) => {
+      dummy.position.set(...item.position)
+      dummy.rotation.set(...(item.rotation ?? [0, 0, 0]))
+      dummy.scale.setScalar(item.scale ?? 1)
+      dummy.updateMatrix()
+      mesh.setMatrixAt(i, dummy.matrix)
+      if (item.color) mesh.setColorAt(i, color.set(item.color))
+    })
+    mesh.instanceMatrix.needsUpdate = true
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+    mesh.computeBoundingSphere()
+  }, [items])
+
+  return (
+    <instancedMesh
+      ref={ref}
+      args={[undefined, undefined, items.length]}
+      castShadow={castShadow}
+      receiveShadow={receiveShadow}
+    >
+      {children}
+    </instancedMesh>
   )
 }
 
-function Nature() {
-  const { trees, bushes, rocks } = useMemo(() => {
+const PATH_SEGMENTS = GATES.map((gate) => {
+  const dist = Math.hypot(gate.position[0], gate.position[2])
+  const start = PLAZA_RADIUS - 0.2
+  const end = dist - 1.3
+  return { gate, start, len: end - start, angle: Math.atan2(gate.position[0], gate.position[2]) }
+})
+
+const Paths = memo(function Paths() {
+  const { posts, bulbs } = useMemo(() => {
+    const posts: InstanceSpec[] = []
+    const bulbs: InstanceSpec[] = []
+    for (const { gate, start, len, angle } of PATH_SEGMENTS) {
+      const sin = Math.sin(angle)
+      const cos = Math.cos(angle)
+      for (let z = start + 1.2; z < start + len - 0.4; z += 2.6) {
+        for (const side of [-1, 1]) {
+          const x = side * (PATH_WIDTH / 2 + 0.35)
+          const wx = x * cos + z * sin
+          const wz = -x * sin + z * cos
+          posts.push({ position: [wx, 0.12, wz] })
+          bulbs.push({ position: [wx, 0.27, wz], color: gate.color })
+        }
+      }
+    }
+    return { posts, bulbs }
+  }, [])
+
+  return (
+    <group>
+      {PATH_SEGMENTS.map(({ gate, start, len, angle }) => (
+        <group key={gate.id} rotation={[0, angle, 0]}>
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.022, start + len / 2]} receiveShadow>
+            <planeGeometry args={[PATH_WIDTH + 0.4, len]} />
+            <meshStandardMaterial color="#5f5a50" roughness={0.9} />
+          </mesh>
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.026, start + len / 2]} receiveShadow>
+            <planeGeometry args={[PATH_WIDTH, len]} />
+            <meshStandardMaterial color="#8d8677" roughness={0.85} />
+          </mesh>
+        </group>
+      ))}
+      <InstancedSet items={posts}>
+        <cylinderGeometry args={[0.07, 0.09, 0.24, 8]} />
+        <meshStandardMaterial color="#1b1f24" metalness={0.5} roughness={0.4} />
+      </InstancedSet>
+      <InstancedSet items={bulbs}>
+        <sphereGeometry args={[0.08, 10, 10]} />
+        <meshBasicMaterial toneMapped={false} />
+      </InstancedSet>
+    </group>
+  )
+})
+
+const Nature = memo(function Nature() {
+  const { trunks, pineLow, pineHigh, canopies, bushes, rocks } = useMemo(() => {
     const trees: { pos: [number, number, number]; scale: number; kind: 'pine' | 'round'; color: string; rot: number }[] = []
     for (let i = 0; i < 70; i++) {
       const a = rand(i) * Math.PI * 2
@@ -167,51 +228,55 @@ function Nature() {
         rot: rand(i + 1300) * Math.PI,
       })
     }
-    return { trees, bushes, rocks }
+    /** Places a part of the tree at a local height, scaled with the tree */
+    const part = (t: (typeof trees)[number], y: number, color?: string): InstanceSpec => ({
+      position: [t.pos[0], y * t.scale, t.pos[2]],
+      rotation: [0, t.rot, 0],
+      scale: t.scale,
+      color,
+    })
+    const pines = trees.filter((t) => t.kind === 'pine')
+    const rounds = trees.filter((t) => t.kind === 'round')
+
+    return {
+      trunks: trees.map((t) => part(t, 0.7)),
+      pineLow: pines.map((t) => part(t, 1.8, t.color)),
+      pineHigh: pines.map((t) => part(t, 2.75, t.color)),
+      canopies: rounds.map((t) => part(t, 2.1, t.color)),
+      bushes: bushes.map((b) => ({ position: b.pos, scale: b.scale, color: b.color })),
+      rocks: rocks.map((r) => ({ position: r.pos, scale: r.scale, rotation: [r.rot, r.rot, 0] as [number, number, number] })),
+    }
   }, [])
 
   return (
     <group>
-      {trees.map((t, i) => (
-        <group key={i} position={t.pos} scale={t.scale} rotation={[0, t.rot, 0]}>
-          <mesh position={[0, 0.7, 0]} castShadow>
-            <cylinderGeometry args={[0.13, 0.22, 1.4, 6]} />
-            <meshStandardMaterial color="#5b3a29" roughness={1} flatShading />
-          </mesh>
-          {t.kind === 'pine' ? (
-            <>
-              <mesh position={[0, 1.8, 0]} castShadow>
-                <coneGeometry args={[1.2, 1.9, 7]} />
-                <meshStandardMaterial color={t.color} roughness={0.9} flatShading />
-              </mesh>
-              <mesh position={[0, 2.75, 0]} castShadow>
-                <coneGeometry args={[0.85, 1.5, 7]} />
-                <meshStandardMaterial color={t.color} roughness={0.9} flatShading />
-              </mesh>
-            </>
-          ) : (
-            <mesh position={[0, 2.1, 0]} castShadow>
-              <icosahedronGeometry args={[1.15, 0]} />
-              <meshStandardMaterial color={t.color} roughness={0.9} flatShading />
-            </mesh>
-          )}
-        </group>
-      ))}
-      {bushes.map((b, i) => (
-        <mesh key={i} position={b.pos} scale={b.scale} castShadow>
-          <icosahedronGeometry args={[0.8, 0]} />
-          <meshStandardMaterial color={b.color} roughness={0.95} flatShading />
-        </mesh>
-      ))}
-      {rocks.map((r, i) => (
-        <mesh key={i} position={r.pos} scale={r.scale} rotation={[r.rot, r.rot, 0]} castShadow receiveShadow>
-          <dodecahedronGeometry args={[0.7, 0]} />
-          <meshStandardMaterial color="#7c7a74" roughness={0.95} flatShading />
-        </mesh>
-      ))}
+      <InstancedSet items={trunks} castShadow>
+        <cylinderGeometry args={[0.13, 0.22, 1.4, 6]} />
+        <meshStandardMaterial color="#5b3a29" roughness={1} flatShading />
+      </InstancedSet>
+      <InstancedSet items={pineLow} castShadow>
+        <coneGeometry args={[1.2, 1.9, 7]} />
+        <meshStandardMaterial roughness={0.9} flatShading />
+      </InstancedSet>
+      <InstancedSet items={pineHigh} castShadow>
+        <coneGeometry args={[0.85, 1.5, 7]} />
+        <meshStandardMaterial roughness={0.9} flatShading />
+      </InstancedSet>
+      <InstancedSet items={canopies} castShadow>
+        <icosahedronGeometry args={[1.15, 0]} />
+        <meshStandardMaterial roughness={0.9} flatShading />
+      </InstancedSet>
+      <InstancedSet items={bushes}>
+        <icosahedronGeometry args={[0.8, 0]} />
+        <meshStandardMaterial roughness={0.95} flatShading />
+      </InstancedSet>
+      <InstancedSet items={rocks} receiveShadow>
+        <dodecahedronGeometry args={[0.7, 0]} />
+        <meshStandardMaterial color="#7c7a74" roughness={0.95} flatShading />
+      </InstancedSet>
     </group>
   )
-}
+})
 
 export function WorldScene() {
   const characterPos = useRef(new THREE.Vector3(0, 0, 6))
@@ -236,7 +301,7 @@ export function WorldScene() {
         position={[-24, 26, -32]}
         color="#ffd6a5"
         intensity={2.1}
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0004}
         shadow-camera-far={90}
         shadow-camera-left={-40}

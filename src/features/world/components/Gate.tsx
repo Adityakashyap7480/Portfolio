@@ -1,6 +1,6 @@
 import { Text } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useMemo, useRef } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import fontBold from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-800-normal.woff'
 import fontSemi from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff'
@@ -30,7 +30,7 @@ function GlowStrip({
   )
 }
 
-export function Gate({
+export const Gate = memo(function Gate({
   config,
   highlighted,
 }: {
@@ -41,7 +41,7 @@ export function Gate({
   const ringRef = useRef<THREE.Group>(null)
   const arcRef = useRef<THREE.Mesh>(null)
   const orbitRef = useRef<THREE.Points>(null)
-  const lightRef = useRef<THREE.PointLight>(null)
+  const ringScale = useRef(new THREE.Vector3(1, 1, 1))
 
   const particles = useMemo(() => {
     const pts = new Float32Array(24 * 3)
@@ -64,17 +64,10 @@ export function Gate({
     }
     if (ringRef.current) {
       const s = highlighted ? 1.06 : 1
-      ringRef.current.scale.lerp(new THREE.Vector3(s, s, s), 0.1)
+      ringRef.current.scale.lerp(ringScale.current.setScalar(s), 0.1)
     }
     if (arcRef.current) arcRef.current.rotation.z += delta * (highlighted ? 1.6 : 0.7)
     if (orbitRef.current) orbitRef.current.rotation.z -= delta * 0.35
-    if (lightRef.current) {
-      lightRef.current.intensity = THREE.MathUtils.lerp(
-        lightRef.current.intensity,
-        highlighted ? 9 : 4,
-        0.08,
-      )
-    }
   })
 
   return (
@@ -147,8 +140,6 @@ export function Gate({
           />
         </points>
       </group>
-      <pointLight ref={lightRef} position={[0, 2.4, 1.2]} color={config.color} intensity={4} distance={9} decay={2} />
-
       <Text
         position={[0, 5.55, 0]}
         font={fontBold}
@@ -166,9 +157,9 @@ export function Gate({
       </Text>
     </group>
   )
-}
+})
 
-export function WelcomeArch() {
+export const WelcomeArch = memo(function WelcomeArch() {
   const accent = '#c8f542'
   return (
     <group position={[0, 0, -2]}>
@@ -244,4 +235,4 @@ export function WelcomeArch() {
       ))}
     </group>
   )
-}
+})

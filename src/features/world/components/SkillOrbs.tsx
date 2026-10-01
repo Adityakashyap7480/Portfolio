@@ -1,5 +1,5 @@
 import { Float, useTexture } from '@react-three/drei'
-import { useLayoutEffect, useMemo } from 'react'
+import { memo, useLayoutEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import {
   brandIconDataUrl,
@@ -49,7 +49,7 @@ function SkillBrandOrb({
   )
 }
 
-export function SkillOrbs() {
+export const SkillOrbs = memo(function SkillOrbs() {
   return (
     <group position={[22, 0, 0]}>
       {WORLD_SKILL_ORBS.map((label, i) => {
@@ -64,4 +64,4 @@ export function SkillOrbs() {
       })}
     </group>
   )
-}
+})

@@ -84,7 +84,7 @@ export function WelcomeIntro() {
           aria-labelledby="welcome-intro-title"
         >
           <motion.div
-            className="absolute inset-0 bg-void/65 backdrop-blur-[3px]"
+            className="absolute inset-0 bg-void/75"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -93,7 +93,7 @@ export function WelcomeIntro() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,245,66,0.14),transparent_55%)]" />
 
           <motion.div
-            className="relative z-10 my-auto w-full max-w-xl overflow-hidden rounded-3xl border border-paper/10 bg-gradient-to-b from-[#161a1f]/95 to-void/95 px-5 pt-8 pb-6 text-center text-paper shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:px-8 sm:pt-10"
+            className="relative z-10 my-auto w-full max-w-xl overflow-hidden rounded-3xl border border-paper/10 bg-gradient-to-b from-[#161a1f]/95 to-void/95 px-5 pt-8 pb-6 text-center text-paper shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] sm:px-8 sm:pt-10"
             initial={{ opacity: 0, y: 28, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}

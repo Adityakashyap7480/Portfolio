@@ -21,6 +21,9 @@ type Mode = 'hub' | 'entering' | 'inside' | 'exiting'
 export type GuidePhase = 'idle' | 'summoning' | 'greeting' | 'asking' | 'leading'
 
 type CharacterPose = { x: number; z: number; facing: number }
+type LookAngles = { yaw: number; pitch: number }
+
+const clampPitch = (p: number) => Math.max(0.12, Math.min(0.55, p))
 
 type ExperienceContextValue = {
   mode: Mode
@@ -32,10 +35,12 @@ type ExperienceContextValue = {
   completeEnter: () => void
   requestExit: () => void
   completeExit: () => void
+  finishTransition: () => void
   canInteract: boolean
-  lookYaw: number
-  lookPitch: number
-  setLook: (yaw: number, pitch: number) => void
+  /** Camera orbit angles — a ref so dragging never re-renders React */
+  look: MutableRefObject<LookAngles>
+  /** Touch joystick, x right / y up in -1..1 — a ref so dragging never re-renders React */
+  joystick: MutableRefObject<{ x: number; y: number }>
   addLookDelta: (dyaw: number, dpitch: number) => void
   characterPose: MutableRefObject<CharacterPose>
   /** Guide / Help assistant */
@@ -105,8 +110,8 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
   const [transitionLabel, setTransitionLabel] = useState<string | null>(null)
   const [mobileKeys, setMobileKeys] = useState<Record<string, boolean>>({})
-  const [lookYaw, setLookYaw] = useState(0)
-  const [lookPitch, setLookPitch] = useState(0.28)
+  const look = useRef<LookAngles>({ yaw: 0, pitch: 0.28 })
+  const joystick = useRef({ x: 0, y: 0 })
   const [guidePhase, setGuidePhase] = useState<GuidePhase>('idle')
   const [guideTarget, setGuideTarget] = useState<SectionId | null>(null)
   const [guideSpeaker, setGuideSpeaker] = useState<GuideSpeaker | null>(null)
@@ -139,14 +144,9 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  const setLook = useCallback((yaw: number, pitch: number) => {
-    setLookYaw(yaw)
-    setLookPitch(Math.max(0.12, Math.min(0.55, pitch)))
-  }, [])
-
   const addLookDelta = useCallback((dyaw: number, dpitch: number) => {
-    setLookYaw((y) => y + dyaw)
-    setLookPitch((p) => Math.max(0.12, Math.min(0.55, p + dpitch)))
+    look.current.yaw += dyaw
+    look.current.pitch = clampPitch(look.current.pitch + dpitch)
   }, [])
 
   const requestEnter = useCallback(
@@ -166,9 +166,14 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
     [navigate],
   )
 
+  /** Swaps the world/section while the portal fully covers the screen */
   const completeEnter = useCallback(() => {
     setMode('inside')
     setTransitionLabel(null)
+  }, [])
+
+  /** Called once the portal has finished revealing the new view */
+  const finishTransition = useCallback(() => {
     lock.current = false
     skipUrlSync.current = false
   }, [])
@@ -186,8 +191,6 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
     setMode('hub')
     setActiveSection(null)
     setTransitionLabel(null)
-    lock.current = false
-    skipUrlSync.current = false
   }, [])
 
   const cancelGuide = useCallback(() => {
@@ -300,11 +303,11 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
       completeEnter,
       requestExit,
       completeExit,
+      finishTransition,
       canInteract:
         (mode === 'hub' || mode === 'inside') && !guideLocksPlayer && !showWelcomeIntro,
-      lookYaw,
-      lookPitch,
-      setLook,
+      look,
+      joystick,
       addLookDelta,
       characterPose,
       guidePhase,
@@ -332,9 +335,7 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
       completeEnter,
       requestExit,
       completeExit,
-      lookYaw,
-      lookPitch,
-      setLook,
+      finishTransition,
       addLookDelta,
       guidePhase,
       guideTarget,

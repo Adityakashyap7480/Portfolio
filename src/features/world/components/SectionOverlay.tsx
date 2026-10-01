@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from 'framer-motion'
 import { Briefcase, X } from 'lucide-react'
 import { experience } from '../../../shared/data/resume'
 import { useExperience } from '../context/ExperienceContext'
@@ -70,34 +69,25 @@ export function SectionOverlay() {
   const open = mode === 'inside' && activeSection
   const bare = activeSection ? BARE_SECTIONS.includes(activeSection) : false
 
+  if (!open || !activeSection) return null
+
+  // Mounted and unmounted behind the portal wipe, so no entrance/exit animation is needed
   return (
-    <AnimatePresence>
-      {open && activeSection && (
-        <motion.div
-          className="pointer-events-auto fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-        >
+        <div className="pointer-events-auto fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6">
           <button
             type="button"
             aria-label="Close overlay"
-            className="absolute inset-0 bg-void/55 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-void/65"
             onClick={requestExit}
           />
 
-          <motion.div
+          <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="section-modal-title"
             className={`relative z-10 flex max-h-[min(88svh,820px)] w-full max-w-lg flex-col border border-paper/10 bg-void/95 text-paper shadow-2xl sm:max-w-2xl lg:max-h-[min(90svh,900px)] ${
               WIDE_SECTIONS.includes(activeSection) ? 'lg:max-w-5xl xl:max-w-6xl' : 'lg:max-w-4xl xl:max-w-5xl'
             } ${bare ? 'overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#0d1117_0%,#07090c_60%,#0a0f0a_100%)]' : ''}`}
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 10 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
           >
             {bare ? (
@@ -177,13 +167,11 @@ export function SectionOverlay() {
             </div>
 
             <div className="border-t border-paper/10 px-5 py-4 text-sm text-paper/55 sm:px-6">
-              Click outside · Esc · or walk out the gate to return
+              Click outside or press Esc to return
             </div>
               </>
             )}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </div>
+        </div>
   )
 }

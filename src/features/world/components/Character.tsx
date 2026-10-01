@@ -37,6 +37,8 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     mode,
     activeSection,
     mobileKeys,
+    joystick,
+    look,
     requestEnter,
     requestExit,
     canInteract,
@@ -50,7 +52,8 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       keys.current[e.code] = true
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+      // Only steal arrows/space in the world, so sections can still scroll with the keyboard
+      if (mode === 'hub' && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
         e.preventDefault()
       }
       if (e.code === 'Escape' && mode === 'inside') requestExit()
@@ -66,43 +69,43 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     }
   }, [mode, requestExit])
 
-  useFrame((_, delta) => {
+  // Placement runs on mode change rather than per frame, because the render loop pauses during transitions
+  useEffect(() => {
     const g = group.current
     if (!g) return
 
-    const dt = Math.min(delta, 0.05)
-    cooldown.current = Math.max(0, cooldown.current - dt)
+    const place = (x: number, z: number, face: number) => {
+      g.position.set(x, 0, z)
+      facing.current = face
+      g.rotation.y = face
+      cooldown.current = 1
+      velocity.current.set(0, 0, 0)
+      positionRef.current.set(x, 0, z)
+      characterPose.current = { x, z, facing: face }
+    }
 
     if (mode === 'entering' && activeSection && placedInside.current !== activeSection) {
       const gate = GATES.find((x) => x.id === activeSection)
       if (gate) {
-        g.position.set(
+        place(
           gate.position[0] + gate.forward[0] * 3.4,
-          0,
           gate.position[2] + gate.forward[1] * 3.4,
+          Math.atan2(gate.forward[0], gate.forward[1]),
         )
-        facing.current = Math.atan2(gate.forward[0], gate.forward[1])
-        g.rotation.y = facing.current
         placedInside.current = activeSection
         exitPlaced.current = false
-        cooldown.current = 1
-        velocity.current.set(0, 0, 0)
       }
     }
 
     if (mode === 'exiting' && placedInside.current && !exitPlaced.current) {
       const gate = GATES.find((x) => x.id === placedInside.current)
       if (gate) {
-        g.position.set(
+        place(
           gate.position[0] - gate.forward[0] * 3.6,
-          0,
           gate.position[2] - gate.forward[1] * 3.6,
+          Math.atan2(-gate.forward[0], -gate.forward[1]),
         )
-        facing.current = Math.atan2(-gate.forward[0], -gate.forward[1])
-        g.rotation.y = facing.current
         exitPlaced.current = true
-        cooldown.current = 1
-        velocity.current.set(0, 0, 0)
       }
     }
 
@@ -110,6 +113,14 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
       placedInside.current = null
       exitPlaced.current = false
     }
+  }, [mode, activeSection, positionRef, characterPose])
+
+  useFrame((_, delta) => {
+    const g = group.current
+    if (!g) return
+
+    const dt = Math.min(delta, 0.05)
+    cooldown.current = Math.max(0, cooldown.current - dt)
 
     const pressed = (code: string) => Boolean(keys.current[code] || mobileKeys[code])
     const forward = pressed('KeyW') || pressed('ArrowUp')
@@ -117,8 +128,12 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
     const left = pressed('KeyA') || pressed('ArrowLeft')
     const right = pressed('KeyD') || pressed('ArrowRight')
 
+    const stick = joystick.current
+    const stickMag = Math.min(1, Math.hypot(stick.x, stick.y))
+    const usingStick = stickMag > 0.12
+
     // Cancel guided tour if player tries to take over
-    if (guideLocksPlayer && (forward || back || left || right)) {
+    if (guideLocksPlayer && (forward || back || left || right || usingStick)) {
       cancelGuide()
     }
 
@@ -127,6 +142,16 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
       0,
       (back ? 1 : 0) - (forward ? 1 : 0),
     )
+    let speedScale = 1
+
+    // Joystick is camera-relative: pushing up always runs into the screen
+    if (move.lengthSq() === 0 && usingStick) {
+      const yaw = look.current.yaw
+      const sin = Math.sin(yaw)
+      const cos = Math.cos(yaw)
+      move.set(stick.x * cos - stick.y * sin, 0, -stick.x * sin - stick.y * cos)
+      speedScale = 0.45 + 0.55 * stickMag
+    }
 
     // Auto-follow helper while being led
     if (guidePhase === 'leading' && helperPose.active) {
@@ -145,7 +170,7 @@ export function Character({ onNearGate, positionRef }: CharacterProps) {
 
     if (isRunning) {
       move.normalize()
-      velocity.current.lerp(move.multiplyScalar(RUN_SPEED), 0.28)
+      velocity.current.lerp(move.multiplyScalar(RUN_SPEED * speedScale), 0.28)
       facing.current = Math.atan2(move.x, move.z)
     } else {
       velocity.current.multiplyScalar(0.78)

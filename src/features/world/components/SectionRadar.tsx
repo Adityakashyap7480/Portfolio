@@ -9,22 +9,32 @@ import { GATES } from '../data/gates'
  * - Dots = section gates relative to your position
  */
 export function SectionRadar() {
-  const { lookYaw, activeSection, mode, characterPose } = useExperience()
+  const { look, activeSection, mode, characterPose } = useExperience()
   const [, setTick] = useState(0)
 
   useEffect(() => {
-    let frame = 0
     let raf = 0
+    let last = { x: NaN, z: NaN, facing: NaN, yaw: NaN }
     const loop = () => {
-      frame += 1
-      if (frame % 2 === 0) setTick((t) => t + 1)
+      const { x, z, facing } = characterPose.current
+      const { yaw } = look.current
+      const moved =
+        Math.abs(x - last.x) > 0.05 ||
+        Math.abs(z - last.z) > 0.05 ||
+        Math.abs(facing - last.facing) > 0.01 ||
+        Math.abs(yaw - last.yaw) > 0.01
+      if (moved || Number.isNaN(last.x)) {
+        last = { x, z, facing, yaw }
+        setTick((t) => t + 1)
+      }
       raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
     return () => cancelAnimationFrame(raf)
-  }, [])
+  }, [characterPose, look])
 
   const { x: cx, z: cz, facing } = characterPose.current
+  const lookYaw = look.current.yaw
 
   // Camera sits at lookYaw behind you; "into the scene" is opposite (+π)
   // Facing uses atan2(vx,vz); convert so arrow-up = running into the screen
@@ -49,7 +59,7 @@ export function SectionRadar() {
 
   return (
     <div className="pointer-events-none fixed top-24 right-4 z-30 flex flex-col items-center sm:top-28 sm:right-6">
-      <div className="relative size-32 overflow-hidden rounded-full border border-accent/30 bg-void/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7),0_0_24px_-8px_rgba(200,245,66,0.4)] backdrop-blur-md sm:size-40">
+      <div className="relative size-32 overflow-hidden rounded-full border border-accent/30 bg-void/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7),0_0_24px_-8px_rgba(200,245,66,0.4)] sm:size-40">
         <div className="absolute inset-0 animate-spin rounded-full bg-[conic-gradient(from_0deg,rgba(200,245,66,0.22),transparent_22%)] [animation-duration:4s]" />
         <div className="absolute inset-3 rounded-full border border-dashed border-paper/15" />
         <div className="absolute inset-[30%] rounded-full border border-paper/10" />
@@ -119,7 +129,7 @@ export function SectionRadar() {
         })}
       </div>
 
-      <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-paper/10 bg-void/80 px-3 py-1 backdrop-blur-md">
+      <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-paper/10 bg-void/80 px-3 py-1">
         <span
           className="size-2 rounded-full"
           style={{ background: nearest.color, boxShadow: `0 0 8px ${nearest.color}` }}
