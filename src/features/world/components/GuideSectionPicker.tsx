@@ -46,21 +46,21 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
 
   return (
     <motion.div
-      className="relative z-10 grid max-h-[92vh] w-full max-w-[960px] overflow-y-auto rounded-2xl border border-paper/10 bg-[linear-gradient(135deg,#0d1117_0%,#07090c_60%,#0a0f0a_100%)] text-paper shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] md:grid-cols-[1.4fr_1fr] md:overflow-hidden"
+      className="relative z-10 grid max-h-[92vh] w-full max-w-[960px] scroll-panel overflow-y-auto rounded-2xl border border-paper/10 bg-[linear-gradient(135deg,#0d1117_0%,#07090c_60%,#0a0f0a_100%)] text-paper shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)] md:grid-cols-[1.4fr_1fr] md:overflow-hidden"
       initial={{ scale: 0.94, y: 18, opacity: 0 }}
       animate={{ scale: 1, y: 0, opacity: 1 }}
       exit={{ scale: 0.96, y: 10, opacity: 0 }}
       transition={{ type: 'spring', stiffness: 260, damping: 26 }}
     >
       <div
-        className="pointer-events-none absolute -top-32 -left-24 size-80 rounded-full bg-accent/10 blur-3xl"
+        className="glow pointer-events-none absolute -top-40 -left-32 size-[26rem] [--glow:rgba(200,245,66,0.12)]"
         aria-hidden
       />
 
       <button
         type="button"
         onClick={onClose}
-        className="absolute top-4 right-4 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/40 backdrop-blur-md transition hover:border-accent hover:text-accent"
+        className="absolute top-4 right-4 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/70 transition hover:border-accent hover:text-accent"
         aria-label="Close"
       >
         <X className="size-4" />

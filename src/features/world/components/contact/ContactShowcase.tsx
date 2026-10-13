@@ -146,7 +146,7 @@ export function ContactShowcase() {
   return (
     <div className="relative grid md:grid-cols-[1.45fr_1fr]">
       <div
-        className="pointer-events-none absolute -top-32 -left-24 size-80 rounded-full bg-accent/10 blur-3xl"
+        className="glow pointer-events-none absolute -top-40 -left-32 size-[26rem] [--glow:rgba(200,245,66,0.12)]"
         aria-hidden
       />
 
@@ -269,7 +269,7 @@ export function ContactShowcase() {
         </motion.div>
 
         <motion.div
-          className="absolute right-6 bottom-6 left-[12%] z-10 rounded-2xl border border-accent/40 bg-void/80 p-4 shadow-[0_0_40px_-12px_rgba(200,245,66,0.5)] backdrop-blur-md"
+          className="absolute right-6 bottom-6 left-[12%] z-10 rounded-2xl border border-accent/40 bg-void/90 p-4 shadow-[0_0_40px_-12px_rgba(200,245,66,0.5)]"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}

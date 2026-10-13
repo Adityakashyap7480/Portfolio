@@ -41,7 +41,7 @@ export const positioning = [
 ]
 
 export const skills = {
-  languages: ['JavaScript', 'TypeScript', 'Java', 'Python', 'HTML5', 'CSS3', 'SQL'],
+  languages: ['JavaScript', 'TypeScript', 'PHP', 'Python', 'HTML5', 'CSS3', 'SQL'],
   core: ['DSA', 'OOP', 'DBMS', 'System Design'],
   frameworks: [
     'React.js',
@@ -50,7 +50,7 @@ export const skills = {
     'Angular',
     'React Native (Expo)',
     'Express.js',
-    'Spring Boot',
+    'Laravel',
     'Redux',
     'Node.js',
     'Socket.IO',
@@ -77,6 +77,7 @@ export const skillEcosystem = [
       'React Native',
       'Node.js',
       'Express.js',
+      'Laravel',
       'PostgreSQL',
       'MongoDB',
       'Redis',

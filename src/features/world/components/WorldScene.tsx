@@ -1,8 +1,12 @@
-import { Cloud, Sky, Sparkles } from '@react-three/drei'
+import { Cloud, Sparkles } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { memo, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
+import { useDayNight } from '../context/DayNightContext'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES, type SectionId } from '../data/gates'
+import { glowVertex, orbFragment, poolFragment } from '../shaders/glow'
+import { Atmosphere } from './Atmosphere'
 import { CameraRig, LookControls } from './CameraRig'
 import { Character } from './Character'
 import { Gate, WelcomeArch } from './Gate'
@@ -143,25 +147,84 @@ const PATH_SEGMENTS = GATES.map((gate) => {
   return { gate, start, len: end - start, angle: Math.atan2(gate.position[0], gate.position[2]) }
 })
 
-const Paths = memo(function Paths() {
-  const { posts, bulbs } = useMemo(() => {
-    const posts: InstanceSpec[] = []
-    const bulbs: InstanceSpec[] = []
-    for (const { gate, start, len, angle } of PATH_SEGMENTS) {
-      const sin = Math.sin(angle)
-      const cos = Math.cos(angle)
-      for (let z = start + 1.2; z < start + len - 0.4; z += 2.6) {
-        for (const side of [-1, 1]) {
-          const x = side * (PATH_WIDTH / 2 + 0.35)
-          const wx = x * cos + z * sin
-          const wz = -x * sin + z * cos
-          posts.push({ position: [wx, 0.12, wz] })
-          bulbs.push({ position: [wx, 0.27, wz], color: gate.color })
-        }
-      }
+const LAMPS = PATH_SEGMENTS.flatMap(({ gate, start, len, angle }) => {
+  const sin = Math.sin(angle)
+  const cos = Math.cos(angle)
+  const lamps: { x: number; z: number; color: string }[] = []
+  for (let z = start + 1.2; z < start + len - 0.4; z += 2.6) {
+    for (const side of [-1, 1]) {
+      const x = side * (PATH_WIDTH / 2 + 0.35)
+      lamps.push({ x: x * cos + z * sin, z: -x * sin + z * cos, color: gate.color })
     }
-    return { posts, bulbs }
-  }, [])
+  }
+  return lamps
+})
+
+const FLAT: [number, number, number] = [-Math.PI / 2, 0, 0]
+
+/** Halo around each bulb plus a pool of light on the path, faded in at night */
+function LampGlows() {
+  const { nightBlend } = useDayNight()
+  const group = useRef<THREE.Group>(null)
+  const { halos, pools } = useMemo(
+    () => ({
+      halos: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.27, l.z], color: l.color })),
+      pools: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.033, l.z], rotation: FLAT, color: l.color })),
+    }),
+    [],
+  )
+  const haloUniforms = useMemo(
+    () => ({ uColor: { value: new THREE.Color('#ffffff') }, uOpacity: { value: 0 }, uPower: { value: 1.6 } }),
+    [],
+  )
+  const poolUniforms = useMemo(
+    () => ({ uColor: { value: new THREE.Color('#ffffff') }, uOpacity: { value: 0 } }),
+    [],
+  )
+
+  useFrame(() => {
+    const t = THREE.MathUtils.smoothstep(nightBlend.current, 0.3, 1)
+    haloUniforms.uOpacity.value = t * 0.95
+    poolUniforms.uOpacity.value = t * 0.55
+    if (group.current) group.current.visible = t > 0
+  })
+
+  return (
+    <group ref={group} visible={false}>
+      <InstancedSet items={halos}>
+        <sphereGeometry args={[0.42, 16, 12]} />
+        <shaderMaterial
+          vertexShader={glowVertex}
+          fragmentShader={orbFragment}
+          uniforms={haloUniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </InstancedSet>
+      <InstancedSet items={pools}>
+        <circleGeometry args={[1.15, 32]} />
+        <shaderMaterial
+          vertexShader={glowVertex}
+          fragmentShader={poolFragment}
+          uniforms={poolUniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </InstancedSet>
+    </group>
+  )
+}
+
+const Paths = memo(function Paths() {
+  const { posts, bulbs } = useMemo(
+    () => ({
+      posts: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.12, l.z] })),
+      bulbs: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.27, l.z], color: l.color })),
+    }),
+    [],
+  )
 
   return (
     <group>
@@ -185,6 +248,7 @@ const Paths = memo(function Paths() {
         <sphereGeometry args={[0.08, 10, 10]} />
         <meshBasicMaterial toneMapped={false} />
       </InstancedSet>
+      <LampGlows />
     </group>
   )
 })
@@ -285,32 +349,7 @@ export function WorldScene() {
 
   return (
     <>
-      <color attach="background" args={['#e9c9a4']} />
-      <fog attach="fog" args={['#e3c6a6', 32, 85]} />
-      <Sky
-        distance={450000}
-        sunPosition={[-60, 9, -100]}
-        turbidity={7}
-        rayleigh={2}
-        mieCoefficient={0.006}
-        mieDirectionalG={0.88}
-      />
-      <ambientLight intensity={0.4} color="#ffe8d6" />
-      <directionalLight
-        castShadow
-        position={[-24, 26, -32]}
-        color="#ffd6a5"
-        intensity={2.1}
-        shadow-mapSize={[1024, 1024]}
-        shadow-bias={-0.0004}
-        shadow-camera-far={90}
-        shadow-camera-left={-40}
-        shadow-camera-right={40}
-        shadow-camera-top={40}
-        shadow-camera-bottom={-40}
-      />
-      <directionalLight position={[20, 14, 30]} color="#c7dcff" intensity={0.7} />
-      <hemisphereLight args={['#ffd9b8', '#2d5a3a', 0.55]} />
+      <Atmosphere />
 
       <Ground />
       <Plaza />
@@ -336,8 +375,8 @@ export function WorldScene() {
         />
       ))}
 
-      <Cloud position={[-20, 14, -10]} opacity={0.35} speed={0.2} color="#ffe4cc" />
-      <Cloud position={[18, 16, 8]} opacity={0.3} speed={0.15} color="#ffe4cc" />
+      <Cloud position={[-20, 14, -10]} segments={10} opacity={0.35} speed={0.2} color="#ffe4cc" />
+      <Cloud position={[18, 16, 8]} segments={10} opacity={0.3} speed={0.15} color="#ffe4cc" />
 
       <Character onNearGate={setNearGate} positionRef={characterPos} />
       <HelperNPC />

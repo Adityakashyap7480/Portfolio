@@ -5,6 +5,7 @@ import portrait from '../../../assets/Passport_size_photo.jpeg'
 import portraitCutout from '../../../assets/portrait_cutout.webp'
 import { profile } from '../../../shared/data/resume'
 import { useExperience } from '../context/ExperienceContext'
+import { DayNightToggle } from './DayNightToggle'
 import { MobileJoystick } from './MobileJoystick'
 import { SectionRadar } from './SectionRadar'
 
@@ -31,7 +32,7 @@ export function HUD() {
           transition={{ type: 'spring', stiffness: 240, damping: 24 }}
         >
           <span
-            className="pointer-events-none absolute -top-10 -left-8 size-28 rounded-full bg-accent/15 blur-2xl"
+            className="pointer-events-none glow absolute -top-16 -left-14 size-40 [--glow:rgba(200,245,66,0.2)]"
             aria-hidden
           />
           <span
@@ -45,14 +46,14 @@ export function HUD() {
             className="relative size-12 shrink-0 cursor-pointer rounded-full bg-gradient-to-br from-accent to-[#4ade80] p-[2px] outline-none focus-visible:ring-2 focus-visible:ring-accent sm:size-13"
             aria-label="View photo"
           >
-            <span className="block size-full overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_35%,#6b4a2c_0%,#2a1f16_55%,#0d0f12_100%)]">
+            <span className="block size-full rotate-[4deg] overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_35%,#6b4a2c_0%,#2a1f16_55%,#0d0f12_100%)]">
               <img
                 src={portraitCutout}
                 alt={profile.name}
                 width={128}
                 height={128}
                 decoding="async"
-                className="size-full origin-top scale-[1.7] object-cover object-top transition-transform duration-500 group-hover:scale-[1.85]"
+                className="size-full origin-top translate-x-[2%] scale-[1.7] object-cover object-top transition-transform duration-500 group-hover:scale-[1.85]"
               />
             </span>
             <span className="absolute right-0 bottom-0 flex size-3.5 items-center justify-center rounded-full bg-void">
@@ -77,6 +78,7 @@ export function HUD() {
         </motion.div>
 
         <div className="pointer-events-auto flex gap-2">
+          {mode === 'hub' && <DayNightToggle />}
           <a
             href={profile.resumeUrl}
             download={profile.resumeFileName}
@@ -98,7 +100,7 @@ export function HUD() {
         </div>
       </header>
 
-      <SectionRadar />
+      {mode === 'hub' && <SectionRadar />}
 
       <div className="pointer-events-none fixed bottom-0 left-0 z-30 hidden p-3 sm:block sm:p-5">
         <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-void/80 px-3.5 py-3 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] sm:px-4">
@@ -128,6 +130,10 @@ export function HUD() {
             <span className="flex items-center gap-1.5">
               <Key accent>H</Key>
               Guide
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Key>N</Key>
+              Day / Night
             </span>
           </div>
           {activeSection && mode === 'inside' && (

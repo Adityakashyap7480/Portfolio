@@ -28,7 +28,7 @@ export function ImageLightbox({
     <AnimatePresence>
       {image && (
         <motion.div
-          className="pointer-events-auto fixed inset-0 z-[60] flex items-center justify-center bg-void/85 p-4 backdrop-blur-sm sm:p-10"
+          className="pointer-events-auto fixed inset-0 z-[60] flex items-center justify-center bg-void/92 p-4 sm:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

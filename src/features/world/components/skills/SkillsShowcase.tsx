@@ -150,8 +150,8 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -right-10 -bottom-10 size-40 rounded-full blur-3xl"
-        style={{ background: `${color}33` }}
+        className="glow pointer-events-none absolute -right-20 -bottom-20 size-60"
+        style={{ ['--glow' as string]: `${color}40` }}
         aria-hidden
       />
 

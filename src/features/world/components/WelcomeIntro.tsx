@@ -75,7 +75,7 @@ export function WelcomeIntro() {
     <AnimatePresence>
       {showWelcomeIntro && (
         <motion.div
-          className="pointer-events-auto fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto p-4 sm:p-6"
+          className="pointer-events-auto fixed inset-0 z-[70] flex items-center justify-center scroll-panel overflow-y-auto p-4 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.45 } }}
@@ -101,7 +101,7 @@ export function WelcomeIntro() {
             onClick={(e) => e.stopPropagation()}
           >
             <span className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent" />
-            <span className="pointer-events-none absolute -top-24 left-1/2 size-56 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
+            <span className="pointer-events-none glow absolute -top-36 left-1/2 size-80 -translate-x-1/2 [--glow:rgba(200,245,66,0.2)]" />
 
             <motion.div
               className="relative mx-auto w-fit"
@@ -110,14 +110,14 @@ export function WelcomeIntro() {
               transition={{ delay: 0.1, type: 'spring', stiffness: 220, damping: 18 }}
             >
               <span className="block size-20 rounded-full bg-gradient-to-br from-accent via-[#4ade80] to-[#38bdf8] p-[2.5px] shadow-[0_0_40px_-8px_rgba(200,245,66,0.7)] sm:size-24">
-                <span className="block size-full overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_35%,#6b4a2c_0%,#2a1f16_55%,#0d0f12_100%)]">
+                <span className="block size-full rotate-[4deg] overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_35%,#6b4a2c_0%,#2a1f16_55%,#0d0f12_100%)]">
                   <img
                     src={portraitCutout}
                     alt={profile.name}
                     width={192}
                     height={192}
                     decoding="async"
-                    className="size-full origin-top scale-[1.7] object-cover object-top"
+                    className="size-full origin-top translate-x-[2%] scale-[1.7] object-cover object-top"
                   />
                 </span>
               </span>
@@ -188,7 +188,7 @@ export function WelcomeIntro() {
                 onClick={dismissWelcomeIntro}
                 className="group relative inline-flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-accent px-8 py-3.5 text-base font-extrabold tracking-wide text-accent-ink shadow-[0_12px_40px_-10px_rgba(200,245,66,0.75)] transition hover:shadow-[0_16px_50px_-8px_rgba(200,245,66,0.95)] sm:w-auto sm:min-w-64"
               >
-                <span className="absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/40 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+                <span className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[150%] -skew-x-12 bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-[350%]" />
                 <span className="relative">Enter experience</span>
                 <ArrowRight className="relative size-5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={2.6} />
               </button>

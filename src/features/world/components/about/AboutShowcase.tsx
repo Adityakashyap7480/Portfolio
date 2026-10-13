@@ -37,8 +37,8 @@ function PortraitCard() {
     <div className="relative h-[360px] overflow-hidden rounded-2xl border border-paper/10 md:h-full md:min-h-[520px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#5a4028_0%,#2a1f16_38%,#0d0f12_75%)]" />
       <div className="absolute top-[8%] left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,190,120,0.35)_0%,rgba(245,170,90,0.1)_45%,transparent_70%)]" />
-      <div className="absolute top-[10%] right-[8%] size-20 rounded-full bg-[#f5b56b]/20 blur-2xl" />
-      <div className="absolute top-[40%] left-[10%] size-14 rounded-full bg-[#f5d7a1]/15 blur-xl" />
+      <div className="glow absolute top-[4%] right-[2%] size-36 [--glow:rgba(245,181,107,0.28)]" />
+      <div className="glow absolute top-[36%] left-[5%] size-24 [--glow:rgba(245,215,161,0.22)]" />
       <div
         className="absolute inset-0 opacity-[0.06]"
         style={{
@@ -62,7 +62,7 @@ function PortraitCard() {
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#07090c] via-[#07090c]/75 to-transparent" />
 
       <motion.span
-        className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full border border-[#4ade80]/40 bg-void/70 px-3 py-1.5 text-[11px] font-bold text-paper/90 backdrop-blur-md"
+        className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full border border-[#4ade80]/40 bg-void/85 px-3 py-1.5 text-[11px] font-bold text-paper/90"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
@@ -75,7 +75,7 @@ function PortraitCard() {
       </motion.span>
 
       <motion.span
-        className="absolute top-4 right-4 flex flex-col items-center rounded-xl border border-accent/40 bg-void/70 px-3 py-2 text-center shadow-[0_0_30px_-10px_rgba(200,245,66,0.6)] backdrop-blur-md"
+        className="absolute top-4 right-4 flex flex-col items-center rounded-xl border border-accent/40 bg-void/85 px-3 py-2 text-center shadow-[0_0_30px_-10px_rgba(200,245,66,0.6)]"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.45, type: 'spring', stiffness: 260, damping: 18 }}
@@ -115,7 +115,7 @@ export function AboutShowcase() {
   return (
     <div className="relative grid gap-6 p-5 sm:p-7 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] md:gap-8 lg:p-9">
       <div
-        className="pointer-events-none absolute -top-32 right-0 size-80 rounded-full bg-accent/10 blur-3xl"
+        className="glow pointer-events-none absolute -top-40 -right-10 size-[26rem] [--glow:rgba(200,245,66,0.12)]"
         aria-hidden
       />
 
@@ -174,8 +174,8 @@ export function AboutShowcase() {
                 transition={{ delay: 0.15 + i * 0.07 }}
               >
                 <span
-                  className="pointer-events-none absolute -top-8 -right-8 size-20 rounded-full blur-2xl"
-                  style={{ background: `${color}33` }}
+                  className="glow pointer-events-none absolute -top-14 -right-14 size-32"
+                  style={{ ['--glow' as string]: `${color}40` }}
                 />
                 <Icon className="relative size-5" style={{ color }} />
                 <p className="relative mt-3 text-3xl leading-none font-extrabold text-paper">

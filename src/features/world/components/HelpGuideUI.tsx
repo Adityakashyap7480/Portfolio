@@ -112,7 +112,7 @@ export function HelpGuideUI() {
             >
               <div className="relative overflow-hidden rounded-2xl border border-paper/10 bg-gradient-to-b from-[#161a1f]/95 to-void/95 p-4 text-paper shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)]">
                 <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
-                <span className="pointer-events-none absolute -top-16 -left-10 size-40 rounded-full bg-accent/15 blur-3xl" />
+                <span className="pointer-events-none glow absolute -top-24 -left-20 size-60 [--glow:rgba(200,245,66,0.2)]" />
 
                 <button
                   type="button"

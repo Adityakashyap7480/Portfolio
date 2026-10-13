@@ -10,10 +10,10 @@ export function PortraitBackdrop({ halo = false }: { halo?: boolean }) {
       style={{ clipPath: 'polygon(18% 0, 100% 0, 100% 100%, 0 100%)' }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_62%_30%,#5a4028_0%,#2a1f16_32%,#0d0f12_70%)]" />
-      <div className="absolute top-[12%] right-[10%] size-28 rounded-full bg-[#f5b56b]/20 blur-2xl" />
-      <div className="absolute top-[38%] left-[30%] size-16 rounded-full bg-[#f5d7a1]/15 blur-xl" />
+      <div className="glow absolute top-[6%] right-[4%] size-44 [--glow:rgba(245,181,107,0.28)]" />
+      <div className="glow absolute top-[33%] left-[25%] size-28 [--glow:rgba(245,215,161,0.22)]" />
       {!halo && (
-        <div className="absolute right-[4%] bottom-[30%] size-24 rounded-full bg-[#4ade80]/15 blur-2xl" />
+        <div className="glow absolute right-[-2%] bottom-[24%] size-40 [--glow:rgba(74,222,128,0.2)]" />
       )}
       <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-accent/10 to-transparent" />
       {halo && (

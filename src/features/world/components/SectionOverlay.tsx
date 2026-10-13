@@ -95,12 +95,12 @@ export function SectionOverlay() {
                 <button
                   type="button"
                   onClick={requestExit}
-                  className="absolute top-4 right-4 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/40 backdrop-blur-md transition hover:border-accent hover:text-accent"
+                  className="absolute top-4 right-4 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/70 transition hover:border-accent hover:text-accent"
                   aria-label="Exit section"
                 >
                   <X className="size-5" />
                 </button>
-                <div className="flex-1 overflow-y-auto">
+                <div className="scroll-panel flex-1 overflow-y-auto">
                   <SectionBody id={activeSection} />
                 </div>
               </>
@@ -162,7 +162,7 @@ export function SectionOverlay() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-6 sm:py-7">
+            <div className="scroll-panel flex-1 overflow-y-auto px-5 py-6 sm:px-6 sm:py-7">
               <SectionBody id={activeSection} />
             </div>
 

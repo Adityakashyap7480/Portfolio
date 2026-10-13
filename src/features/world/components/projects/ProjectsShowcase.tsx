@@ -72,13 +72,13 @@ function ProjectCard({
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -top-28 -left-20 size-72 rounded-full blur-3xl"
-        style={{ background: `${color}12` }}
+        className="glow pointer-events-none absolute -top-40 -left-32 size-96"
+        style={{ ['--glow' as string]: `${color}1a` }}
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute top-1/2 -right-24 hidden size-[420px] -translate-y-1/2 rounded-full blur-3xl lg:block"
-        style={{ background: `${color}1f` }}
+        className="glow pointer-events-none absolute top-1/2 -right-36 hidden size-[540px] -translate-y-1/2 lg:block"
+        style={{ ['--glow' as string]: `${color}29` }}
         aria-hidden
       />
       <div

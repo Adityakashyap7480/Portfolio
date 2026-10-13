@@ -25,8 +25,8 @@ export function TiltedScreenshot({
       aria-label={`Expand ${alt}`}
     >
       <div
-        className="pointer-events-none absolute top-1/2 left-1/2 h-[85%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[70px] transition-opacity duration-500 group-hover:opacity-100 lg:opacity-80"
-        style={{ background: `${color}40` }}
+        className="glow pointer-events-none absolute top-1/2 left-1/2 h-[130%] w-[125%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-500 group-hover:opacity-100 lg:opacity-80"
+        style={{ ['--glow' as string]: `${color}4d` }}
         aria-hidden
       />
 
@@ -52,7 +52,6 @@ export function TiltedScreenshot({
             <img
               src={src}
               alt={alt}
-              loading="lazy"
               decoding="async"
               className="block aspect-[1024/488] w-full object-cover object-top"
             />
@@ -61,7 +60,7 @@ export function TiltedScreenshot({
               aria-hidden
             />
             {onExpand && (
-              <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full border border-paper/15 bg-void/80 px-3 py-1.5 text-[11px] font-semibold text-paper opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100">
+              <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full border border-paper/15 bg-void/80 px-3 py-1.5 text-[11px] font-semibold text-paper opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <Maximize2 className="size-3" />
                 Expand
               </span>
@@ -82,7 +81,6 @@ export function TiltedScreenshot({
               <img
                 src={src}
                 alt=""
-                loading="lazy"
                 decoding="async"
                 className="block aspect-[9/19] w-full object-cover"
                 style={{ objectPosition: phoneFocus }}
