@@ -131,7 +131,7 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
 
   return (
     <motion.section
-      className={`group relative overflow-hidden rounded-2xl border p-5 transition-[box-shadow,border-color] duration-500 sm:p-6 ${
+      className={`group relative overflow-hidden rounded-2xl border p-4 transition-[box-shadow,border-color] duration-500 sm:p-6 ${
         featured ? 'md:col-span-2' : ''
       }`}
       style={{
@@ -161,9 +161,9 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
         </div>
       )}
 
-      <header className="relative flex items-start gap-4">
+      <header className="relative flex items-start gap-3 sm:gap-4">
         <span
-          className="flex size-12 shrink-0 items-center justify-center rounded-xl border"
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl border sm:size-12"
           style={{
             color,
             borderColor: `${color}59`,
@@ -171,13 +171,13 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
             boxShadow: `0 0 24px -6px ${color}66`,
           }}
         >
-          <Icon className="size-6" strokeWidth={1.8} />
+          <Icon className="size-5 sm:size-6" strokeWidth={1.8} />
         </span>
         <div className={`min-w-0 flex-1 ${art ? 'sm:pr-32' : ''}`}>
           <p className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ color }}>
             {group.title}
           </p>
-          <h3 className="mt-1 text-xl leading-tight font-extrabold tracking-tight sm:text-2xl">
+          <h3 className="mt-1 text-lg leading-tight font-extrabold tracking-tight sm:text-2xl">
             {group.heading}
           </h3>
           <p className="mt-1.5 text-sm leading-snug text-paper/60">{group.description}</p>
@@ -199,17 +199,17 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
       </header>
 
       <ul
-        className={`relative mt-5 ${
+        className={`relative mt-4 sm:mt-5 ${
           featured
-            ? 'grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8'
-            : 'flex flex-wrap gap-2'
+            ? 'flex flex-wrap gap-1.5 sm:grid sm:grid-cols-4 sm:gap-2 lg:grid-cols-6 xl:grid-cols-8'
+            : 'flex flex-wrap gap-1.5 sm:gap-2'
         }`}
         style={{ ['--chip' as string]: `${color}80` }}
       >
         {group.items.map((item) => (
           <li
             key={item}
-            className="flex items-center gap-2 rounded-lg border border-paper/10 bg-paper/[0.035] px-3 py-2 text-[13px] font-medium text-paper/90 transition duration-200 hover:-translate-y-0.5 hover:border-(--chip) hover:bg-paper/[0.07]"
+            className="flex items-center gap-1.5 rounded-lg border border-paper/10 bg-paper/[0.035] px-2.5 py-1.5 text-[12px] font-medium sm:gap-2 sm:px-3 sm:py-2 sm:text-[13px] text-paper/90 transition duration-200 hover:-translate-y-0.5 hover:border-(--chip) hover:bg-paper/[0.07]"
           >
             <ChipIcon name={item} color={color} />
             <span className="truncate">{item}</span>
@@ -222,7 +222,7 @@ function SkillCard({ group, index }: { group: Group; index: number }) {
 
 export function SkillsShowcase() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 sm:gap-5">
+    <div className="grid gap-3 md:grid-cols-2 sm:gap-5">
       {skillEcosystem.map((group, i) => (
         <SkillCard key={group.id} group={group} index={i} />
       ))}

@@ -45,7 +45,7 @@ export function HelpGuideUI() {
       <AnimatePresence>
         {showHelpBtn && (
           <motion.div
-            className="pointer-events-auto fixed top-1/2 right-4 z-[35] -translate-y-1/2 sm:right-6"
+            className="pointer-events-auto fixed bottom-6 left-4 z-[35] sm:top-1/2 sm:right-6 sm:bottom-auto sm:left-auto sm:-translate-y-1/2"
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 24 }}
@@ -77,11 +77,11 @@ export function HelpGuideUI() {
               <span className="text-[10px] font-extrabold tracking-[0.2em] uppercase">
                 Help
               </span>
-              <kbd className="rounded-md border border-paper/20 bg-paper/5 px-1.5 py-px font-sans text-[9px] font-bold text-paper/60">
+              <kbd className="hidden rounded-md border border-paper/20 bg-paper/5 px-1.5 py-px font-sans text-[9px] font-bold text-paper/60 sm:block">
                 H
               </kbd>
 
-              <span className="pointer-events-none absolute top-1/2 right-full mr-3 w-max -translate-y-1/2 translate-x-2 rounded-xl border border-paper/10 bg-void/95 px-3.5 py-2.5 text-left opacity-0 shadow-xl transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+              <span className="pointer-events-none absolute top-1/2 right-full mr-3 hidden w-max sm:block -translate-y-1/2 translate-x-2 rounded-xl border border-paper/10 bg-void/95 px-3.5 py-2.5 text-left opacity-0 shadow-xl transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                 <span className="block text-sm font-bold text-paper">
                   Need a guide?
                 </span>
@@ -102,7 +102,7 @@ export function HelpGuideUI() {
           guidePhase === "idle" &&
           !showWelcomeIntro && (
             <motion.div
-              className="pointer-events-auto fixed bottom-24 left-1/2 z-40 w-[min(92vw,380px)] -translate-x-1/2 sm:bottom-28"
+              className="pointer-events-auto fixed bottom-44 left-1/2 z-40 w-[min(92vw,380px)] -translate-x-1/2 sm:bottom-28"
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -164,7 +164,7 @@ export function HelpGuideUI() {
                   </button>
                 </div>
 
-                <p className="relative mt-3 flex items-center justify-center gap-1.5 text-[11px] text-paper/40">
+                <p className="relative mt-3 hidden items-center justify-center gap-1.5 text-[11px] text-paper/40 sm:flex">
                   Press
                   <kbd className="rounded border border-paper/20 bg-paper/[0.06] px-1.5 py-px font-sans text-[9px] font-bold text-paper/70">
                     H
@@ -180,7 +180,7 @@ export function HelpGuideUI() {
       <AnimatePresence>
         {(showSummoning || showLeading) && (
           <motion.div
-            className="pointer-events-auto fixed bottom-24 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full border border-accent/30 bg-void/85 py-2 pr-2 pl-4 text-paper shadow-[0_12px_36px_-12px_rgba(0,0,0,0.8),0_0_24px_-10px_rgba(200,245,66,0.6)]"
+            className="pointer-events-auto fixed bottom-44 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 sm:bottom-24 rounded-full border border-accent/30 bg-void/85 py-2 pr-2 pl-4 text-paper shadow-[0_12px_36px_-12px_rgba(0,0,0,0.8),0_0_24px_-10px_rgba(200,245,66,0.6)]"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

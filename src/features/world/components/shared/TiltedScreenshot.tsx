@@ -60,7 +60,7 @@ export function TiltedScreenshot({
               aria-hidden
             />
             {onExpand && (
-              <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full border border-paper/15 bg-void/80 px-3 py-1.5 text-[11px] font-semibold text-paper opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full border border-paper/15 bg-void/80 px-2.5 py-1 text-[10px] font-semibold text-paper transition-opacity duration-300 sm:bottom-3 sm:left-3 sm:px-3 sm:py-1.5 sm:text-[11px] sm:opacity-0 sm:group-hover:opacity-100">
                 <Maximize2 className="size-3" />
                 Expand
               </span>

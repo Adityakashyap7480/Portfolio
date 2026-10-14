@@ -34,7 +34,7 @@ const focusAreas: { title: string; detail: string; color: string; icon: LucideIc
 
 function PortraitCard() {
   return (
-    <div className="relative h-[360px] overflow-hidden rounded-2xl border border-paper/10 md:h-full md:min-h-[520px]">
+    <div className="relative h-[340px] overflow-hidden rounded-2xl border border-paper/10 sm:h-[360px] md:h-full md:min-h-[520px]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#5a4028_0%,#2a1f16_38%,#0d0f12_75%)]" />
       <div className="absolute top-[8%] left-1/2 size-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,190,120,0.35)_0%,rgba(245,170,90,0.1)_45%,transparent_70%)]" />
       <div className="glow absolute top-[4%] right-[2%] size-36 [--glow:rgba(245,181,107,0.28)]" />
@@ -75,7 +75,7 @@ function PortraitCard() {
       </motion.span>
 
       <motion.span
-        className="absolute top-4 right-4 flex flex-col items-center rounded-xl border border-accent/40 bg-void/85 px-3 py-2 text-center shadow-[0_0_30px_-10px_rgba(200,245,66,0.6)]"
+        className="absolute top-14 right-4 flex flex-col items-center rounded-xl sm:top-4 border border-accent/40 bg-void/85 px-3 py-2 text-center shadow-[0_0_30px_-10px_rgba(200,245,66,0.6)]"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.45, type: 'spring', stiffness: 260, damping: 18 }}
@@ -143,7 +143,7 @@ export function AboutShowcase() {
       </aside>
 
       <div className="relative min-w-0 space-y-7">
-        <div className="pr-12">
+        <div className="sm:pr-12">
           <p className="flex items-center gap-3 text-xs font-bold tracking-[0.3em] text-paper/70 uppercase">
             <span className="size-2 rounded-full bg-accent shadow-[0_0_8px_#c8f542]" />
             Get to know me
@@ -153,18 +153,18 @@ export function AboutShowcase() {
             About{' '}
             <span className="bg-gradient-to-r from-accent to-[#4ade80] bg-clip-text text-transparent">Me</span>
           </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-paper/80 sm:text-xl">
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-paper/80 sm:mt-4 sm:text-xl">
             {profile.positioning}
           </p>
         </div>
 
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <ul className="grid grid-cols-3 gap-2 sm:gap-3">
           {positioning.map((stat, i) => {
             const { color, icon: Icon } = STAT_STYLE[i % STAT_STYLE.length]
             return (
               <motion.li
                 key={stat.label}
-                className="relative overflow-hidden rounded-2xl border p-4"
+                className="relative overflow-hidden rounded-2xl border p-3 sm:p-4"
                 style={{
                   borderColor: `${color}40`,
                   background: `linear-gradient(145deg, ${color}14 0%, rgba(255,255,255,0.02) 70%)`,
@@ -177,13 +177,15 @@ export function AboutShowcase() {
                   className="glow pointer-events-none absolute -top-14 -right-14 size-32"
                   style={{ ['--glow' as string]: `${color}40` }}
                 />
-                <Icon className="relative size-5" style={{ color }} />
-                <p className="relative mt-3 text-3xl leading-none font-extrabold text-paper">
+                <Icon className="relative size-4 sm:size-5" style={{ color }} />
+                <p className="relative mt-2 text-2xl leading-none font-extrabold text-paper sm:mt-3 sm:text-3xl">
                   {stat.value}
                   <span style={{ color }}>{stat.suffix}</span>
                 </p>
-                <p className="relative mt-1.5 text-sm font-bold text-paper/85">{stat.label}</p>
-                <p className="relative mt-0.5 text-xs leading-snug text-paper/45">{stat.detail}</p>
+                <p className="relative mt-1.5 text-[11px] font-bold text-paper/85 sm:text-sm">
+                  {stat.label}
+                </p>
+                <p className="relative mt-0.5 hidden text-xs leading-snug text-paper/45 sm:block">{stat.detail}</p>
               </motion.li>
             )
           })}
@@ -191,20 +193,20 @@ export function AboutShowcase() {
 
         <div>
           <SectionLabel>What I do</SectionLabel>
-          <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
             {focusAreas.map((area, i) => {
               const Icon = area.icon
               return (
                 <motion.li
                   key={area.title}
-                  className="group flex items-center gap-3 rounded-xl border border-paper/10 bg-paper/[0.03] p-3 transition-colors duration-300 hover:border-(--area) hover:bg-paper/[0.06]"
+                  className="group flex flex-col items-start gap-2.5 rounded-xl border border-paper/10 bg-paper/[0.03] p-3 transition-colors sm:flex-row sm:items-center sm:gap-3 duration-300 hover:border-(--area) hover:bg-paper/[0.06]"
                   style={{ ['--area' as string]: `${area.color}80` }}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + i * 0.06 }}
                 >
                   <span
-                    className="flex size-11 shrink-0 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-105"
+                    className="flex size-10 shrink-0 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-105 sm:size-11"
                     style={{
                       color: area.color,
                       borderColor: `${area.color}50`,
@@ -214,8 +216,8 @@ export function AboutShowcase() {
                     <Icon className="size-5" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-base font-bold text-paper">{area.title}</span>
-                    <span className="block text-sm text-paper/55">{area.detail}</span>
+                    <span className="block text-sm font-bold text-paper sm:text-base">{area.title}</span>
+                    <span className="mt-0.5 block text-xs text-paper/55 sm:mt-0 sm:text-sm">{area.detail}</span>
                   </span>
                 </motion.li>
               )
@@ -225,9 +227,9 @@ export function AboutShowcase() {
 
         <div>
           <SectionLabel>My story</SectionLabel>
-          <div className="relative mt-3 rounded-2xl border border-paper/10 bg-paper/[0.025] p-5">
+          <div className="relative mt-3 rounded-2xl border border-paper/10 bg-paper/[0.025] p-4 sm:p-5">
             <span className="absolute top-5 bottom-5 left-0 w-[3px] rounded-full bg-gradient-to-b from-accent via-[#4ade80] to-transparent" />
-            <p className="text-base leading-relaxed text-paper/75">{firstStory}</p>
+            <p className="text-[15px] leading-relaxed text-paper/75 sm:text-base">{firstStory}</p>
             <AnimatePresence initial={false}>
               {storyOpen && (
                 <motion.div
@@ -238,7 +240,7 @@ export function AboutShowcase() {
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
                   {moreStory.map((p) => (
-                    <p key={p} className="mt-4 text-base leading-relaxed text-paper/75">
+                    <p key={p} className="mt-4 text-[15px] leading-relaxed text-paper/75 sm:text-base">
                       {p}
                     </p>
                   ))}

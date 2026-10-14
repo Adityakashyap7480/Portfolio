@@ -19,7 +19,7 @@ function CompanyLogo({ company }: { company: string }) {
   const brand = COMPANY_BRAND[company]
   const Icon = brand?.icon
   return (
-    <span className="flex size-16 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl bg-white px-1 text-center shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] sm:size-[72px]">
+    <span className="flex size-14 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl bg-white px-1 text-center shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] sm:size-[72px]">
       {Icon ? (
         <>
           <Icon className="size-6 text-[#1d4ed8]" strokeWidth={2.2} />
@@ -108,7 +108,7 @@ function ExperienceCard({
 
   return (
     <motion.article
-      className="group relative overflow-hidden rounded-2xl border p-5 transition-shadow duration-500 sm:p-7"
+      className="group relative overflow-hidden rounded-2xl border p-4 transition-shadow duration-500 sm:p-7"
       style={{
         borderColor: `${color}40`,
         background: `radial-gradient(90% 120% at 100% 50%, ${color}1c 0%, transparent 55%), linear-gradient(135deg, ${color}12 0%, transparent 40%), #0a0d0c`,
@@ -128,21 +128,21 @@ function ExperienceCard({
         aria-hidden
       />
 
-      <div className="relative grid items-center gap-8 lg:grid-cols-[1.3fr_1fr] lg:gap-10">
+      <div className="relative grid items-center gap-5 sm:gap-8 lg:grid-cols-[1.3fr_1fr] lg:gap-10">
         <div className="min-w-0">
-          <header className="flex flex-wrap items-start gap-4">
+          <header className="flex flex-wrap items-start gap-3 sm:gap-4">
             <CompanyLogo company={job.company} />
             <div className="min-w-0 flex-1">
-              <h3 className="text-2xl leading-tight font-extrabold tracking-tight sm:text-[1.7rem]">
+              <h3 className="text-xl leading-tight font-extrabold tracking-tight sm:text-[1.7rem]">
                 {job.company}
               </h3>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-2.5 text-sm text-paper/65 sm:text-base">
+              <p className="mt-1 flex flex-wrap items-center gap-x-2 text-[13px] text-paper/65 sm:mt-1.5 sm:gap-x-2.5 sm:text-base">
                 <span>{job.role}</span>
                 <span className="text-paper/30">·</span>
                 <span>{job.focus}</span>
               </p>
             </div>
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-col sm:flex-nowrap sm:items-end">
               <span
                 className="rounded-lg border px-3 py-1 text-xs font-bold whitespace-nowrap"
                 style={{ color, borderColor: `${color}59`, background: `${color}10` }}
@@ -167,9 +167,9 @@ function ExperienceCard({
             </div>
           </header>
 
-          <p className="mt-5 text-[15px] leading-relaxed text-paper/70">{job.summary}</p>
+          <p className="mt-4 text-sm leading-relaxed text-paper/70 sm:mt-5 sm:text-[15px]">{job.summary}</p>
 
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-4 space-y-2.5 sm:space-y-3">
             {job.highlights.map((h) => (
               <Highlight key={h} text={h} emphasis={job.emphasis} color={color} />
             ))}
@@ -187,7 +187,7 @@ function ExperienceCard({
         </div>
       </div>
 
-      <div className="relative mt-6 flex flex-wrap items-center gap-2 border-t border-paper/10 pt-5">
+      <div className="relative mt-5 flex flex-wrap items-center gap-1.5 border-t border-paper/10 pt-4 sm:mt-6 sm:gap-2 sm:pt-5">
         <span className="mr-2 inline-flex items-center gap-2 text-sm font-semibold" style={{ color }}>
           <Code className="size-4" />
           Tech Stack

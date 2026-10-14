@@ -67,7 +67,7 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
       </button>
 
       {/* Left — section picker */}
-      <div className="relative p-6 sm:p-9">
+      <div className="relative p-5 sm:p-9">
         <div className="absolute top-8 right-8 hidden h-10 w-14 md:block" style={DOTS} aria-hidden />
         <div className="absolute bottom-6 left-6 h-10 w-14" style={DOTS} aria-hidden />
 
@@ -88,7 +88,7 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
           <span className="h-px w-8 bg-accent/70" />
         </p>
 
-        <h2 className="mt-3 text-3xl leading-[1.05] font-extrabold tracking-tight sm:text-[2.6rem]">
+        <h2 className="mt-3 text-[1.75rem] leading-[1.05] font-extrabold tracking-tight sm:text-[2.6rem]">
           Where would you like
           <br />
           <span className="inline-flex items-center gap-3">
@@ -101,9 +101,9 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
           </span>
         </h2>
 
-        <p className="mt-3 text-base text-paper/60">Select a section — I&apos;ll lead you there.</p>
+        <p className="mt-2.5 text-[15px] text-paper/60 sm:mt-3 sm:text-base">Select a section — I&apos;ll lead you there.</p>
 
-        <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid grid-cols-1 gap-2.5 sm:mt-7 sm:grid-cols-2 sm:gap-3">
           {GATES.map((gate, i) => {
             const { icon: Icon, blurb } = SECTION_META[gate.id]
             const isLastOdd = GATES.length % 2 === 1 && i === GATES.length - 1
@@ -112,7 +112,7 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
                 key={gate.id}
                 type="button"
                 onClick={() => onSelect(gate.id)}
-                className={`group cursor-pointer relative flex items-center gap-4 overflow-hidden rounded-xl border border-paper/10 bg-paper/[0.03] py-4 pr-4 pl-5 text-left transition-[border-color,background-color,box-shadow] duration-300 hover:bg-paper/[0.06] ${
+                className={`group cursor-pointer relative flex items-center gap-3 overflow-hidden rounded-xl border border-paper/10 bg-paper/[0.03] py-3 pr-3 pl-4 text-left sm:gap-4 sm:py-4 sm:pr-4 sm:pl-5 transition-[border-color,background-color,box-shadow] duration-300 hover:bg-paper/[0.06] ${
                   isLastOdd ? 'sm:col-span-2 sm:w-3/4' : ''
                 }`}
                 initial={{ opacity: 0, y: 14 }}
@@ -133,7 +133,7 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
                   }}
                 />
                 <span
-                  className="flex size-12 shrink-0 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-110"
+                  className="flex size-10 shrink-0 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-110 sm:size-12"
                   style={{
                     color: gate.color,
                     background: `linear-gradient(135deg, ${gate.color}2e, ${gate.color}0d)`,
@@ -156,7 +156,7 @@ export function GuideSectionPicker({ onSelect, onClose }: GuideSectionPickerProp
           })}
         </div>
 
-        <div className="mt-7 flex justify-center">
+        <div className="mt-5 flex justify-center sm:mt-7">
           <button
             type="button"
             onClick={onClose}

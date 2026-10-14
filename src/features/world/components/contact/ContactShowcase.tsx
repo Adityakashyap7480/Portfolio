@@ -55,7 +55,7 @@ type ContactRowProps = {
 function ContactRow({ color, icon: Icon, label, title, note, action, featured, index }: ContactRowProps) {
   return (
     <motion.div
-      className="group relative flex flex-wrap items-center gap-4 rounded-2xl border p-4 transition-[border-color,box-shadow] duration-300 sm:flex-nowrap sm:p-5"
+      className="group relative flex flex-wrap items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow] duration-300 sm:flex-nowrap sm:gap-4 sm:p-5"
       style={{
         borderColor: featured ? `${color}73` : 'rgba(243,242,238,0.1)',
         background: featured
@@ -77,7 +77,7 @@ function ContactRow({ color, icon: Icon, label, title, note, action, featured, i
       )}
 
       <span
-        className="flex size-14 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-105"
+        className="flex size-12 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-105 sm:size-14"
         style={{
           color,
           borderColor: `${color}59`,
@@ -85,15 +85,15 @@ function ContactRow({ color, icon: Icon, label, title, note, action, featured, i
           boxShadow: `0 0 26px -8px ${color}99`,
         }}
       >
-        <Icon className="size-6" />
+        <Icon className="size-5 sm:size-6" />
       </span>
 
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-bold tracking-[0.22em] uppercase" style={{ color }}>
           {label}
         </p>
-        <div className="mt-0.5 text-lg font-bold text-paper sm:text-xl">{title}</div>
-        <p className="mt-0.5 text-sm text-paper/55">{note}</p>
+        <div className="mt-0.5 text-base font-bold text-paper sm:text-xl">{title}</div>
+        <p className="mt-0.5 text-[13px] text-paper/55 sm:text-sm">{note}</p>
       </div>
 
       <a
@@ -150,7 +150,7 @@ export function ContactShowcase() {
         aria-hidden
       />
 
-      <div className="relative p-6 sm:p-9">
+      <div className="relative p-5 sm:p-9">
         <div
           className="absolute top-10 right-10 hidden h-10 w-16 md:block"
           style={{
@@ -173,12 +173,20 @@ export function ContactShowcase() {
           </span>
         </h2>
 
-        <p className="mt-3 max-w-lg text-base leading-relaxed text-paper/65">
+        <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-paper/65 sm:text-base">
           Open to full-stack roles, collaborations, and exciting opportunities. Feel free to reach out
           — I&apos;d love to hear from you!
         </p>
 
-        <div className="mt-7 space-y-3">
+        <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent/[0.07] px-3 py-1.5 text-xs font-semibold text-paper/85 sm:hidden">
+          <span className="relative flex size-2">
+            <span className="absolute inset-0 animate-ping rounded-full bg-[#4ade80] opacity-75" />
+            <span className="relative size-2 rounded-full bg-[#4ade80]" />
+          </span>
+          Open to Full Stack Developer roles
+        </p>
+
+        <div className="mt-6 space-y-3 sm:mt-7">
           <ContactRow
             index={0}
             featured

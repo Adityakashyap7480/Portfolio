@@ -58,8 +58,8 @@ export function SectionRadar() {
   const nearest = markers.reduce((a, b) => (a.dist < b.dist ? a : b))
 
   return (
-    <div className="pointer-events-none fixed top-24 right-4 z-30 flex flex-col items-center sm:top-28 sm:right-6">
-      <div className="relative size-32 overflow-hidden rounded-full border border-accent/30 bg-void/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7),0_0_24px_-8px_rgba(200,245,66,0.4)] sm:size-40">
+    <div className="pointer-events-none fixed top-[74px] right-3 z-30 flex flex-col items-center sm:top-28 sm:right-6">
+      <div className="relative size-28 overflow-hidden rounded-full border border-accent/30 bg-void/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.7),0_0_24px_-8px_rgba(200,245,66,0.4)] sm:size-40">
         <div className="absolute inset-0 animate-spin rounded-full bg-[conic-gradient(from_0deg,rgba(200,245,66,0.22),transparent_22%)] [animation-duration:4s]" />
         <div className="absolute inset-3 rounded-full border border-dashed border-paper/15" />
         <div className="absolute inset-[30%] rounded-full border border-paper/10" />
@@ -129,12 +129,12 @@ export function SectionRadar() {
         })}
       </div>
 
-      <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-paper/10 bg-void/80 px-3 py-1">
+      <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border border-paper/10 bg-void/80 px-2.5 py-1 sm:mt-2 sm:gap-2 sm:px-3">
         <span
           className="size-2 rounded-full"
           style={{ background: nearest.color, boxShadow: `0 0 8px ${nearest.color}` }}
         />
-        <p className="text-[11px] text-paper/60">
+        <p className="text-[10px] text-paper/60 sm:text-[11px]">
           Nearest{' '}
           <span className="font-bold tracking-wide uppercase" style={{ color: nearest.color }}>
             {nearest.label}

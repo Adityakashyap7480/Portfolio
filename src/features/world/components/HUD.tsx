@@ -24,9 +24,9 @@ export function HUD() {
 
   return (
     <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-3 p-3 sm:p-5">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-2 p-3 sm:gap-3 sm:p-5">
         <motion.div
-          className="group pointer-events-auto relative flex items-center gap-3 overflow-hidden rounded-2xl border border-accent/25 bg-void/80 py-2 pr-4 pl-2 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition-[border-color,box-shadow] duration-300 hover:border-accent/55 hover:shadow-[0_0_32px_-8px_rgba(200,245,66,0.45)] sm:gap-3.5 sm:pr-5"
+          className="group pointer-events-auto relative flex min-w-0 items-center gap-2.5 overflow-hidden rounded-2xl border border-accent/25 bg-void/80 py-1.5 pr-3 pl-1.5 text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition-[border-color,box-shadow] duration-300 hover:border-accent/55 hover:shadow-[0_0_32px_-8px_rgba(200,245,66,0.45)] sm:gap-3.5 sm:py-2 sm:pr-5 sm:pl-2"
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 240, damping: 24 }}
@@ -43,7 +43,7 @@ export function HUD() {
           <button
             type="button"
             onClick={() => setPhotoOpen(true)}
-            className="relative size-12 shrink-0 cursor-pointer rounded-full bg-gradient-to-br from-accent to-[#4ade80] p-[2px] outline-none focus-visible:ring-2 focus-visible:ring-accent sm:size-13"
+            className="relative size-10 shrink-0 cursor-pointer rounded-full bg-gradient-to-br from-accent to-[#4ade80] p-[2px] outline-none focus-visible:ring-2 focus-visible:ring-accent sm:size-13"
             aria-label="View photo"
           >
             <span className="block size-full rotate-[4deg] overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_35%,#6b4a2c_0%,#2a1f16_55%,#0d0f12_100%)]">
@@ -63,10 +63,10 @@ export function HUD() {
           </button>
 
           <div className="relative min-w-0">
-            <p className="text-[15px] leading-tight font-extrabold tracking-tight sm:text-base">
+            <p className="text-sm leading-tight font-extrabold tracking-tight whitespace-nowrap sm:text-base">
               {profile.name}
             </p>
-            <p className="mt-0.5 bg-gradient-to-r from-accent to-[#4ade80] bg-clip-text text-[10px] font-bold tracking-[0.18em] text-transparent uppercase sm:text-[11px]">
+            <p className="mt-0.5 bg-gradient-to-r from-accent to-[#4ade80] bg-clip-text text-[9px] font-bold tracking-[0.14em] whitespace-nowrap text-transparent uppercase sm:text-[11px] sm:tracking-[0.18em]">
               {profile.role}
             </p>
             <p className="mt-1 hidden items-center gap-1.5 text-[11px] font-medium text-paper/55 sm:flex">
@@ -77,15 +77,16 @@ export function HUD() {
           </div>
         </motion.div>
 
-        <div className="pointer-events-auto flex gap-2">
+        <div className="pointer-events-auto flex shrink-0 gap-1.5 sm:gap-2">
           {mode === 'hub' && <DayNightToggle />}
           <a
             href={profile.resumeUrl}
             download={profile.resumeFileName}
-            className="group inline-flex items-center gap-2 rounded-xl border border-accent/40 bg-void/80 px-3.5 py-2.5 text-sm font-bold text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition hover:border-accent hover:bg-accent hover:text-accent-ink"
+            aria-label="Download resume"
+            className="group inline-flex min-h-[42px] items-center gap-2 rounded-xl border border-accent/40 bg-void/80 px-3 py-2.5 text-sm font-bold text-paper shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)] transition hover:border-accent hover:bg-accent hover:text-accent-ink sm:px-3.5"
           >
             <Download className="size-4 text-accent transition group-hover:translate-y-0.5 group-hover:text-accent-ink" />
-            Resume
+            <span className="hidden sm:inline">Resume</span>
           </a>
           {mode === 'inside' && (
             <button

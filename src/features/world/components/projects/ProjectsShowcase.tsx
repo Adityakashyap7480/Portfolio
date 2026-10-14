@@ -56,7 +56,7 @@ function ProjectCard({
 
   return (
     <motion.article
-      className="group relative overflow-hidden rounded-2xl border p-5 sm:p-7"
+      className="group relative overflow-hidden rounded-2xl border p-4 sm:p-7"
       style={{
         borderColor: `${color}33`,
         background: `linear-gradient(135deg, ${color}14 0%, rgba(8,8,8,0) 45%), linear-gradient(180deg, #0e1110 0%, #080908 100%)`,
@@ -87,10 +87,10 @@ function ProjectCard({
         aria-hidden
       />
 
-      <div className="relative grid items-center gap-8 lg:grid-cols-[1.08fr_1fr] lg:gap-10">
+      <div className="relative grid items-center gap-5 sm:gap-8 lg:grid-cols-[1.08fr_1fr] lg:gap-10">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="flex items-center gap-3 text-xs font-bold tracking-[0.2em] text-paper/60 uppercase">
+          <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+            <p className="flex items-center gap-2.5 text-[11px] font-bold tracking-[0.16em] text-paper/60 uppercase sm:gap-3 sm:text-xs sm:tracking-[0.2em]">
               <span className="text-xl font-extrabold tracking-normal" style={{ color }}>
                 {project.index}
               </span>
@@ -106,15 +106,15 @@ function ProjectCard({
             </span>
           </div>
 
-          <h3 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h3 className="mt-3 text-3xl font-extrabold tracking-tight sm:mt-4 sm:text-5xl">
             <ProjectTitle name={project.name} accent={project.nameAccent} color={color} />
           </h3>
 
-          <p className="mt-3 text-[15px] leading-relaxed text-paper/70 sm:text-base">
+          <p className="mt-2.5 text-sm leading-relaxed text-paper/70 sm:mt-3 sm:text-base">
             {project.summary}
           </p>
 
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-4 space-y-2.5 sm:mt-5 sm:space-y-3">
             {project.points.map((point) => (
               <li key={point} className="flex gap-3 text-sm leading-relaxed text-paper/80 sm:text-[15px]">
                 <span
@@ -129,7 +129,7 @@ function ProjectCard({
           </ul>
 
           <ul
-            className="mt-6 flex flex-wrap gap-2"
+            className="mt-5 flex flex-wrap gap-1.5 sm:mt-6 sm:gap-2"
             style={{ ['--chip' as string]: `${color}66` }}
           >
             {project.stack.map((tech) => (
@@ -143,7 +143,7 @@ function ProjectCard({
             ))}
           </ul>
 
-          <div className="mt-6">
+          <div className="mt-5 sm:mt-6">
             {project.liveUrl ? (
               <a
                 href={project.liveUrl}
@@ -186,7 +186,7 @@ export function ProjectsShowcase() {
 
   return (
     <>
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-4 sm:space-y-8">
         {projects.map((project, i) => (
           <ProjectCard key={project.name} project={project} index={i} onExpand={setPreview} />
         ))}

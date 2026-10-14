@@ -73,7 +73,7 @@ export function SectionOverlay() {
 
   // Mounted and unmounted behind the portal wipe, so no entrance/exit animation is needed
   return (
-        <div className="pointer-events-auto fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6">
+        <div className="pointer-events-auto fixed inset-0 z-40 flex items-center justify-center p-0 sm:p-6">
           <button
             type="button"
             aria-label="Close overlay"
@@ -85,9 +85,9 @@ export function SectionOverlay() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="section-modal-title"
-            className={`relative z-10 flex max-h-[min(88svh,820px)] w-full max-w-lg flex-col border border-paper/10 bg-void/95 text-paper shadow-2xl sm:max-w-2xl lg:max-h-[min(90svh,900px)] ${
+            className={`relative z-10 flex h-full max-h-full w-full flex-col border-paper/10 bg-void/95 text-paper shadow-2xl sm:h-auto sm:max-h-[min(88svh,820px)] sm:max-w-2xl sm:border lg:max-h-[min(90svh,900px)] ${
               WIDE_SECTIONS.includes(activeSection) ? 'lg:max-w-5xl xl:max-w-6xl' : 'lg:max-w-4xl xl:max-w-5xl'
-            } ${bare ? 'overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#0d1117_0%,#07090c_60%,#0a0f0a_100%)]' : ''}`}
+            } ${bare ? 'overflow-hidden bg-[linear-gradient(135deg,#0d1117_0%,#07090c_60%,#0a0f0a_100%)] sm:rounded-2xl' : ''}`}
             onClick={(e) => e.stopPropagation()}
           >
             {bare ? (
@@ -95,7 +95,7 @@ export function SectionOverlay() {
                 <button
                   type="button"
                   onClick={requestExit}
-                  className="absolute top-4 right-4 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/70 transition hover:border-accent hover:text-accent"
+                  className="absolute top-3 right-3 z-30 flex size-10 items-center justify-center rounded-lg border border-paper/20 bg-void/85 transition hover:border-accent hover:text-accent sm:top-4 sm:right-4 sm:bg-void/70"
                   aria-label="Exit section"
                 >
                   <X className="size-5" />
@@ -106,8 +106,8 @@ export function SectionOverlay() {
               </>
             ) : (
               <>
-            <div className="flex items-center justify-between border-b border-paper/10 px-5 py-4 sm:px-6 sm:py-5">
-              <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between gap-3 border-b border-paper/10 px-4 py-3.5 sm:gap-0 sm:px-6 sm:py-5">
+              <div className="flex min-w-0 items-center gap-4">
                 {activeSection === 'experience' && (
                   <span className="hidden size-14 shrink-0 items-center justify-center rounded-2xl border border-accent/40 bg-accent/10 text-accent shadow-[0_0_30px_-8px_rgba(200,245,66,0.6)] sm:flex">
                     <Briefcase className="size-6" />
@@ -116,12 +116,12 @@ export function SectionOverlay() {
                 <div>
                   <h2
                     id="section-modal-title"
-                    className="text-3xl font-extrabold tracking-tight sm:text-4xl"
+                    className="text-2xl font-extrabold tracking-tight sm:text-4xl"
                   >
                     <SectionTitle id={activeSection} />
                   </h2>
                   {subtitles[activeSection] && (
-                    <p className="mt-1 text-sm text-paper/55 sm:text-base">
+                    <p className="mt-0.5 text-[13px] text-paper/55 sm:mt-1 sm:text-base">
                       {subtitles[activeSection]}
                     </p>
                   )}
@@ -155,18 +155,18 @@ export function SectionOverlay() {
               <button
                 type="button"
                 onClick={requestExit}
-                className="flex size-10 items-center justify-center border border-paper/15 transition hover:border-accent hover:text-accent"
+                className="flex size-10 shrink-0 items-center justify-center border border-paper/15 transition hover:border-accent hover:text-accent"
                 aria-label="Exit section"
               >
                 <X className="size-5" />
               </button>
             </div>
 
-            <div className="scroll-panel flex-1 overflow-y-auto px-5 py-6 sm:px-6 sm:py-7">
+            <div className="scroll-panel flex-1 overflow-y-auto px-4 py-5 sm:px-6 sm:py-7">
               <SectionBody id={activeSection} />
             </div>
 
-            <div className="border-t border-paper/10 px-5 py-4 text-sm text-paper/55 sm:px-6">
+            <div className="hidden border-t border-paper/10 px-5 py-4 text-sm text-paper/55 sm:block sm:px-6">
               Click outside or press Esc to return
             </div>
               </>

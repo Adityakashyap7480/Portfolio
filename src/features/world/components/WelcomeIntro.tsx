@@ -8,23 +8,53 @@ import { useExperience } from '../context/ExperienceContext'
 type Tip = {
   label: string
   detail: string
+  /** Shown instead of `detail` on phones, where there is no keyboard */
+  touchDetail: string
   color: string
   icon: ComponentType<{ className?: string; strokeWidth?: number }>
   keys: string[]
 }
 
 const tips: Tip[] = [
-  { label: 'Move', detail: 'Run around the world', color: '#c8f542', icon: Keyboard, keys: ['W', 'A', 'S', 'D'] },
-  { label: 'Look', detail: 'Drag to look around', color: '#38bdf8', icon: MousePointer2, keys: ['Drag'] },
-  { label: 'Explore', detail: 'Walk into glowing gates', color: '#a78bfa', icon: DoorOpen, keys: ['Gate'] },
-  { label: 'Guide', detail: 'Get walked to any section', color: '#f59e0b', icon: Compass, keys: ['H'] },
+  {
+    label: 'Move',
+    detail: 'Run around the world',
+    touchDetail: 'Use the joystick at bottom right',
+    color: '#c8f542',
+    icon: Keyboard,
+    keys: ['W', 'A', 'S', 'D'],
+  },
+  {
+    label: 'Look',
+    detail: 'Drag to look around',
+    touchDetail: 'Swipe the screen to look around',
+    color: '#38bdf8',
+    icon: MousePointer2,
+    keys: ['Drag'],
+  },
+  {
+    label: 'Explore',
+    detail: 'Walk into glowing gates',
+    touchDetail: 'Walk into glowing gates',
+    color: '#a78bfa',
+    icon: DoorOpen,
+    keys: ['Gate'],
+  },
+  {
+    label: 'Guide',
+    detail: 'Get walked to any section',
+    touchDetail: 'Tap Help to get walked to any section',
+    color: '#f59e0b',
+    icon: Compass,
+    keys: ['H'],
+  },
 ]
 
 function TipCard({ tip }: { tip: Tip }) {
   const Icon = tip.icon
   return (
     <motion.li
-      className="group flex items-center gap-3 rounded-xl border border-paper/10 bg-paper/[0.04] p-3 text-left transition-colors duration-300 hover:border-(--tip) hover:bg-paper/[0.07]"
+      className="group flex items-center gap-3 rounded-xl border border-paper/10 bg-paper/[0.04] p-2.5 text-left transition-colors sm:p-3 duration-300 hover:border-(--tip) hover:bg-paper/[0.07]"
       style={{ ['--tip' as string]: `${tip.color}80` }}
       variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
     >
@@ -39,7 +69,7 @@ function TipCard({ tip }: { tip: Tip }) {
           <span className="text-[11px] font-extrabold tracking-[0.18em] uppercase" style={{ color: tip.color }}>
             {tip.label}
           </span>
-          <span className="flex gap-0.5">
+          <span className="hidden gap-0.5 sm:flex">
             {tip.keys.map((k) => (
               <kbd
                 key={k}
@@ -50,7 +80,10 @@ function TipCard({ tip }: { tip: Tip }) {
             ))}
           </span>
         </span>
-        <span className="mt-0.5 block text-[13px] text-paper/65">{tip.detail}</span>
+        <span className="mt-0.5 block text-[13px] text-paper/65">
+          <span className="sm:hidden">{tip.touchDetail}</span>
+          <span className="hidden sm:inline">{tip.detail}</span>
+        </span>
       </span>
     </motion.li>
   )
@@ -195,7 +228,7 @@ export function WelcomeIntro() {
               <button
                 type="button"
                 onClick={dismissWelcomeIntro}
-                className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-paper/45 transition hover:text-paper/80"
+                className="hidden cursor-pointer items-center gap-1.5 text-xs font-semibold text-paper/45 transition hover:text-paper/80 sm:inline-flex"
               >
                 or press
                 <kbd className="rounded border border-paper/20 bg-paper/[0.06] px-1.5 py-px font-sans text-[10px] font-bold text-paper/70">
