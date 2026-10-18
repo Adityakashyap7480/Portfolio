@@ -3,6 +3,7 @@ import {
   ArrowUpRight,
   BadgeCheck,
   Building2,
+  Camera,
   Check,
   CreditCard,
   Lock,
@@ -18,6 +19,7 @@ import { SkillIcon } from '../SkillIcon'
 type Project = (typeof projects)[number]
 
 const DOMAIN_ICONS: Record<Project['visual'], LucideIcon> = {
+  photo: Camera,
   legal: Scale,
   pay: CreditCard,
   estate: Building2,
@@ -25,6 +27,7 @@ const DOMAIN_ICONS: Record<Project['visual'], LucideIcon> = {
 }
 
 const DOMAIN_COLORS: Record<Project['visual'], string> = {
+  photo: '#f97316',
   legal: '#4ade80',
   pay: '#60a5fa',
   estate: '#f5b945',

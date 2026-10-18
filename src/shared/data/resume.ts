@@ -2,6 +2,7 @@ import auditlabCover from '../../assets/projects/auditlab.webp'
 import coveAgentCover from '../../assets/projects/cove-agent.webp'
 import fluencePayCover from '../../assets/projects/fluence-pay.webp'
 import sisCertificationCover from '../../assets/projects/sis-certification.webp'
+import snapnearCover from '../../assets/projects/snapnear.webp'
 
 export const profile = {
   name: 'Aditya Kashyap',
@@ -36,8 +37,8 @@ export const heroLines = [
 /** Stats derived only from existing resume content — no invented metrics */
 export const positioning = [
   { value: 3, suffix: '+', label: 'Years Experience', detail: 'Professional full-stack delivery' },
-  { value: 4, suffix: '', label: 'Featured Products', detail: 'AUDITLab, Fluence Pay, SIS, Cove' },
-  { value: 4, suffix: '', label: 'Product Domains', detail: 'Case ops · Payments · Real estate · Certification' },
+  { value: 5, suffix: '', label: 'Featured Products', detail: 'SnapNear, AUDITLab, Fluence Pay, SIS, Cove' },
+  { value: 5, suffix: '', label: 'Product Domains', detail: 'On-demand · Case ops · Payments · Real estate · Certification' },
 ]
 
 export const skills = {
@@ -184,8 +185,38 @@ export const experience = [
 
 export const projects = [
   {
-    name: 'AUDITLab',
+    name: 'SnapNear',
     index: '01',
+    role: 'Full Stack Developer',
+    nameAccent: 'Near',
+    domain: 'On-demand · Photography',
+    summary:
+      'A full-stack booking platform with Client, Photographer Partner, and Super Admin apps for on-demand photography and videography services.',
+    cover: snapnearCover,
+    stack: [
+      'React Native/Expo',
+      'React.js',
+      'NestJS',
+      'TypeScript',
+      'PostgreSQL',
+      'Socket.io',
+      'Razorpay',
+      'REST APIs',
+    ],
+    points: [
+      'Implemented booking workflows with GPS-based address selection, real-time status tracking, OTP-based shoot verification, Razorpay checkout, and customer ratings.',
+      'Built photographer partner features including onboarding, online/offline availability, geolocation-based job matching using the Haversine formula, job management, shoot timers, and earnings tracking.',
+      'Developed a Super Admin dashboard for revenue monitoring, booking management, user administration, and payout settlement with wallet and UPI payout tracking.',
+      'Integrated JWT authentication, email OTP verification, Google OAuth, Expo push notifications, Socket.io real-time updates, Razorpay payment links, QR payments, and payment webhooks.',
+    ],
+    visual: 'photo' as const,
+    liveUrl: 'https://www.snapnear.in/login' as string | undefined,
+    liveLabel: 'View live' as string | undefined,
+    githubUrl: undefined as string | undefined,
+  },
+  {
+    name: 'AUDITLab',
+    index: '02',
     role: 'Full Stack Developer',
     nameAccent: 'Lab',
     domain: 'Legal Operations',
@@ -205,7 +236,7 @@ export const projects = [
   },
   {
     name: 'Fluence Pay',
-    index: '02',
+    index: '03',
     role: 'Full Stack Developer',
     nameAccent: 'Pay',
     domain: 'Fintech · Payments',
@@ -225,7 +256,7 @@ export const projects = [
   },
   {
     name: 'Cove Agent',
-    index: '03',
+    index: '04',
     role: 'Full Stack Developer',
     nameAccent: 'Agent',
     domain: 'Real Estate',
@@ -245,7 +276,7 @@ export const projects = [
   },
   {
     name: 'SIS Certification',
-    index: '04',
+    index: '05',
     role: 'Full Stack Developer',
     nameAccent: 'Certification',
     domain: 'Certification Ops',
