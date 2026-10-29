@@ -1,11 +1,8 @@
 import { Cloud, Sparkles } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
 import { memo, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
-import { useDayNight } from '../context/DayNightContext'
 import { useExperience } from '../context/ExperienceContext'
 import { GATES, type SectionId } from '../data/gates'
-import { glowVertex, orbFragment, poolFragment } from '../shaders/glow'
 import { Atmosphere } from './Atmosphere'
 import { CameraRig, LookControls } from './CameraRig'
 import { Character } from './Character'
@@ -160,63 +157,6 @@ const LAMPS = PATH_SEGMENTS.flatMap(({ gate, start, len, angle }) => {
   return lamps
 })
 
-const FLAT: [number, number, number] = [-Math.PI / 2, 0, 0]
-
-/** Halo around each bulb plus a pool of light on the path, faded in at night */
-function LampGlows() {
-  const { nightBlend } = useDayNight()
-  const group = useRef<THREE.Group>(null)
-  const { halos, pools } = useMemo(
-    () => ({
-      halos: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.27, l.z], color: l.color })),
-      pools: LAMPS.map((l): InstanceSpec => ({ position: [l.x, 0.033, l.z], rotation: FLAT, color: l.color })),
-    }),
-    [],
-  )
-  const haloUniforms = useMemo(
-    () => ({ uColor: { value: new THREE.Color('#ffffff') }, uOpacity: { value: 0 }, uPower: { value: 1.6 } }),
-    [],
-  )
-  const poolUniforms = useMemo(
-    () => ({ uColor: { value: new THREE.Color('#ffffff') }, uOpacity: { value: 0 } }),
-    [],
-  )
-
-  useFrame(() => {
-    const t = THREE.MathUtils.smoothstep(nightBlend.current, 0.3, 1)
-    haloUniforms.uOpacity.value = t * 0.95
-    poolUniforms.uOpacity.value = t * 0.55
-    if (group.current) group.current.visible = t > 0
-  })
-
-  return (
-    <group ref={group} visible={false}>
-      <InstancedSet items={halos}>
-        <sphereGeometry args={[0.42, 16, 12]} />
-        <shaderMaterial
-          vertexShader={glowVertex}
-          fragmentShader={orbFragment}
-          uniforms={haloUniforms}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </InstancedSet>
-      <InstancedSet items={pools}>
-        <circleGeometry args={[1.15, 32]} />
-        <shaderMaterial
-          vertexShader={glowVertex}
-          fragmentShader={poolFragment}
-          uniforms={poolUniforms}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </InstancedSet>
-    </group>
-  )
-}
-
 const Paths = memo(function Paths() {
   const { posts, bulbs } = useMemo(
     () => ({
@@ -248,7 +188,6 @@ const Paths = memo(function Paths() {
         <sphereGeometry args={[0.08, 10, 10]} />
         <meshBasicMaterial toneMapped={false} />
       </InstancedSet>
-      <LampGlows />
     </group>
   )
 })

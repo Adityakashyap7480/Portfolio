@@ -5,7 +5,6 @@ import portrait from '../../../assets/Passport_size_photo.jpeg'
 import portraitCutout from '../../../assets/portrait_cutout.webp'
 import { profile } from '../../../shared/data/resume'
 import { useExperience } from '../context/ExperienceContext'
-import { DayNightToggle } from './DayNightToggle'
 import { MobileJoystick } from './MobileJoystick'
 import { SectionRadar } from './SectionRadar'
 
@@ -78,7 +77,6 @@ export function HUD() {
         </motion.div>
 
         <div className="pointer-events-auto flex shrink-0 gap-1.5 sm:gap-2">
-          {mode === 'hub' && <DayNightToggle />}
           <a
             href={profile.resumeUrl}
             download={profile.resumeFileName}
@@ -131,10 +129,6 @@ export function HUD() {
             <span className="flex items-center gap-1.5">
               <Key accent>H</Key>
               Guide
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Key>N</Key>
-              Day / Night
             </span>
           </div>
           {activeSection && mode === 'inside' && (

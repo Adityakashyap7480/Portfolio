@@ -3,7 +3,6 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useState } from 'react'
 import portraitCutout from '../../../assets/portrait_cutout.webp'
 import { projects } from '../../../shared/data/resume'
-import { DayNightProvider } from '../context/DayNightContext'
 import { ExperienceProvider, useExperience } from '../context/ExperienceContext'
 import { HelpGuideUI } from './HelpGuideUI'
 import { HUD } from './HUD'
@@ -36,7 +35,6 @@ function WorldCanvas() {
       />
       <Suspense fallback={null}>
         <WorldScene />
-        {/* Compile shaders of hidden objects (night sky, lamp glows) up front so toggling never hitches */}
         <Preload all />
       </Suspense>
     </Canvas>
@@ -68,18 +66,16 @@ export function PortfolioWorld() {
   usePreloadSectionImages()
   return (
     <ExperienceProvider>
-      <DayNightProvider>
-        <div className="relative h-svh w-full overflow-hidden bg-[#e9c9a4]">
-          <WorldCanvas />
+      <div className="relative h-svh w-full overflow-hidden bg-[#e9c9a4]">
+        <WorldCanvas />
 
-          <HUD />
-          <HelpGuideUI />
-          <SectionOverlay />
-          <WelcomeIntro />
-          <PortalTransition />
-          <WorldAudio />
-        </div>
-      </DayNightProvider>
+        <HUD />
+        <HelpGuideUI />
+        <SectionOverlay />
+        <WelcomeIntro />
+        <PortalTransition />
+        <WorldAudio />
+      </div>
     </ExperienceProvider>
   )
 }
