@@ -12,7 +12,7 @@ export const profile = {
   email: 'adityakashyap7480@gmail.com',
   phone: '+91 74808 45211',
   phoneHref: 'tel:+917480845211',
-  linkedin: 'https://www.linkedin.com/in/aditya-kashyap-06a126253/',
+  linkedin: 'https://www.linkedin.com/in/aditya-kashyap-06a125233/',
   location: 'India',
   /** Put your PDF at: public/Aditya_Kashyap_Resume.pdf */
   resumeUrl: '/Aditya_Kashyap_Resume.pdf',
