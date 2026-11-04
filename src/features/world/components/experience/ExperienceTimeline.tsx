@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Bird, Check, Code, House, type LucideIcon } from 'lucide-react'
+import { Bird, Building2, Check, Code, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import { experience } from '../../../../shared/data/resume'
 import { ImageLightbox, type LightboxImage } from '../shared/ImageLightbox'
@@ -12,7 +12,7 @@ const COLORS = ['#c8f542', '#60a5fa', '#a78bfa', '#f59e0b']
 
 const COMPANY_BRAND: Record<string, { icon: LucideIcon; label: string; phoneFocus: string }> = {
   'Blu Parrot Ventures Pvt Ltd': { icon: Bird, label: 'Blu Parrot', phoneFocus: '70% 50%' },
-  'Peregrine IT Solutions': { icon: House, label: 'Peregrine IT Solutions', phoneFocus: '82% 50%' },
+  HCLTech: { icon: Building2, label: 'HCLTech', phoneFocus: '82% 50%' },
 }
 
 function CompanyLogo({ company }: { company: string }) {
